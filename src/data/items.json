@@ -1,0 +1,1002 @@
+[
+    {
+        "value": 1,
+        "name": "Sonic Blad",
+        "descr": "STR+13"
+    },
+    {
+        "value": 2,
+        "name": "Duranda",
+        "descr": "STR+12"
+    },
+    {
+        "value": 3,
+        "name": "Bizen Swor",
+        "descr": "STR+11"
+    },
+    {
+        "value": 4,
+        "name": "Zepyulo",
+        "descr": "STR+15,INT+3"
+    },
+    {
+        "value": 5,
+        "name": "Fafhnie",
+        "descr": "STR+20,INT+4"
+    },
+    {
+        "value": 6,
+        "name": "Zanziba",
+        "descr": "STR+18"
+    },
+    {
+        "value": 7,
+        "name": "Brunhil",
+        "descr": "STR+20"
+    },
+    {
+        "value": 8,
+        "name": "Black Katan",
+        "descr": "STR+3"
+    },
+    {
+        "value": 9,
+        "name": "Sword of Slicin",
+        "descr": "STR+4"
+    },
+    {
+        "value": 10,
+        "name": "Mikado Swor",
+        "descr": "STR+8"
+    },
+    {
+        "value": 11,
+        "name": "Sword of Heroe",
+        "descr": "STR+11"
+    },
+    {
+        "value": 12,
+        "name": "Sword of Evi",
+        "descr": "STR+15"
+    },
+    {
+        "value": 13,
+        "name": "Ogre Blad",
+        "descr": "STR+20"
+    },
+    {
+        "value": 14,
+        "name": "Flame Swor",
+        "descr": "Str+6"
+    },
+    {
+        "value": 15,
+        "name": "Musashi ",
+        "descr": "Heroblade"
+    },
+    {
+        "value": 16,
+        "name": "Eskendale Blad",
+        "descr": "STR+15,INT+3"
+    },
+    {
+        "value": 17,
+        "name": "Ice Scimita",
+        "descr": "STR+3"
+    },
+    {
+        "value": 18,
+        "name": "Ice Blad",
+        "descr": "Str+7"
+    },
+    {
+        "value": 19,
+        "name": "Peridat Swor",
+        "descr": "Str+11"
+    },
+    {
+        "value": 20,
+        "name": "Euro",
+        "descr": "STR+15,INT+3"
+    },
+    {
+        "value": 21,
+        "name": "Malachite Swor",
+        "descr": "STR+18,INT-4"
+    },
+    {
+        "value": 22,
+        "name": "Dwarven Swor",
+        "descr": "STR+7"
+    },
+    {
+        "value": 23,
+        "name": "Noto",
+        "descr": "STR+15,INT+3"
+    },
+    {
+        "value": 24,
+        "name": "Sigmun",
+        "descr": "Str+19"
+    },
+    {
+        "value": 25,
+        "name": "Broken Swor",
+        "descr": "STR+4"
+    },
+    {
+        "value": 26,
+        "name": "Death Claw",
+        "descr": "STR+8"
+    },
+    {
+        "value": 27,
+        "name": "Evil Blad",
+        "descr": "STR+8,INT+3"
+    },
+    {
+        "value": 28,
+        "name": "Relic Swor",
+        "descr": "STR+24,INT-16"
+    },
+    {
+        "value": 29,
+        "name": "Dragon's Cla",
+        "descr": "STR+5"
+    },
+    {
+        "value": 30,
+        "name": "Pristine Swor",
+        "descr": "STR+8,INT+10"
+    },
+    {
+        "value": 31,
+        "name": "Kusanagi Blad",
+        "descr": "STR+15"
+    },
+    {
+        "value": 32,
+        "name": "Karanbor",
+        "descr": "STR+17"
+    },
+    {
+        "value": 33,
+        "name": "Dragon Spea",
+        "descr": "STR+7"
+    },
+    {
+        "value": 34,
+        "name": "Benkay's Glaiv",
+        "descr": "STR+12"
+    },
+    {
+        "value": 35,
+        "name": "Ozrich's Spea",
+        "descr": "STR+14,INT+17"
+    },
+    {
+        "value": 36,
+        "name": "ThunderSpea",
+        "descr": "STR+9"
+    },
+    {
+        "value": 37,
+        "name": "Bolea",
+        "descr": "STR+17"
+    },
+    {
+        "value": 38,
+        "name": "Ice Ax",
+        "descr": "STR+11"
+    },
+    {
+        "value": 39,
+        "name": "Black Ax",
+        "descr": "STR+16,INT-8"
+    },
+    {
+        "value": 40,
+        "name": "Rune Ax",
+        "descr": "STR+15"
+    },
+    {
+        "value": 41,
+        "name": "Battle Dagge",
+        "descr": "STR+3"
+    },
+    {
+        "value": 42,
+        "name": "Fire Staf",
+        "descr": "INT+3"
+    },
+    {
+        "value": 43,
+        "name": "Flame Flai",
+        "descr": "STR+4"
+    },
+    {
+        "value": 44,
+        "name": "Thunder Whi",
+        "descr": "STR+6"
+    },
+    {
+        "value": 45,
+        "name": "Demon Hamme",
+        "descr": "STR+12,INT-4"
+    },
+    {
+        "value": 46,
+        "name": "Kukai's Ro",
+        "descr": "STR+8"
+    },
+    {
+        "value": 47,
+        "name": "Mystic Mac",
+        "descr": "STR+2,INT+7"
+    },
+    {
+        "value": 48,
+        "name": "Liebel's Ro",
+        "descr": "INT+14"
+    },
+    {
+        "value": 49,
+        "name": "Lightning Bo",
+        "descr": "STR+7"
+    },
+    {
+        "value": 50,
+        "name": "Black Bo",
+        "descr": "STR+3,INT+2"
+    },
+    {
+        "value": 51,
+        "name": "Earth Char",
+        "descr": "FIRE,ICE,ELEC+3"
+    },
+    {
+        "value": 52,
+        "name": "Elder Sig",
+        "descr": "STR+11,INT+5,"
+    },
+    {
+        "value": 53,
+        "name": "Flame Char",
+        "descr": "FIRE+5"
+    },
+    {
+        "value": 54,
+        "name": "Hydra's Fan",
+        "descr": "STR+4,PHYS+6,FIRE+8"
+    },
+    {
+        "value": 55,
+        "name": "Ice Char",
+        "descr": "ICE+5"
+    },
+    {
+        "value": 56,
+        "name": "Byak's Fan",
+        "descr": "INT+7,ICE+12"
+    },
+    {
+        "value": 57,
+        "name": "Snow Or",
+        "descr": "INT+11,FIRE-8,ICE+14"
+    },
+    {
+        "value": 58,
+        "name": "Thunder Char",
+        "descr": "ELEC+5"
+    },
+    {
+        "value": 59,
+        "name": "Lightning Or",
+        "descr": "STR+6,ELEC+17"
+    },
+    {
+        "value": 60,
+        "name": "Black Char",
+        "descr": "STR+8,INT-4,BLACK+13,"
+    },
+    {
+        "value": 61,
+        "name": "White Char",
+        "descr": "WHITE+5"
+    },
+    {
+        "value": 62,
+        "name": "Angel's Win",
+        "descr": "INT+16,PHYS+7,WHITE+23"
+    },
+    {
+        "value": 63,
+        "name": "Ring of Powe",
+        "descr": "STR+18,INT-7"
+    },
+    {
+        "value": 64,
+        "name": "Ring of Magi",
+        "descr": "STR-12,INT-16"
+    },
+    {
+        "value": 65,
+        "name": "Dragon Rin",
+        "descr": "STR+6,FIRE+14"
+    },
+    {
+        "value": 66,
+        "name": "Thunder Rin",
+        "descr": "STR+3,ELEC+15,WHITE+6"
+    },
+    {
+        "value": 67,
+        "name": "Engraved Rin",
+        "descr": "INT+11,BLACK+19,WHITE-11"
+    },
+    {
+        "value": 68,
+        "name": "Demon Rin",
+        "descr": "STR+21,BLACK+17,WHITE-15"
+    },
+    {
+        "value": 69,
+        "name": "Ring of Protectio",
+        "descr": "INT+5,PHYS+12,WHITE+14"
+    },
+    {
+        "value": 70,
+        "name": "Battle Bugl",
+        "descr": "STR+2,PHYS+2"
+    },
+    {
+        "value": 71,
+        "name": "Ninja Gar",
+        "descr": "PHYS+3,BLACK+2"
+    },
+    {
+        "value": 72,
+        "name": "Samurai Armou",
+        "descr": "PHYS+5"
+    },
+    {
+        "value": 73,
+        "name": "Mail of Nei",
+        "descr": "PHYS+7"
+    },
+    {
+        "value": 74,
+        "name": "Golden Mai",
+        "descr": "PHYS+12"
+    },
+    {
+        "value": 75,
+        "name": "Mail of Ear",
+        "descr": "PHYS+16,WHITE+7"
+    },
+    {
+        "value": 76,
+        "name": "Houlou's Rob",
+        "descr": "PHYS+7,FIRE+11"
+    },
+    {
+        "value": 77,
+        "name": "Snow Cap",
+        "descr": "PHYS+11,COLD+16"
+    },
+    {
+        "value": 78,
+        "name": "Black Armou",
+        "descr": "PHYS+8,BLACK+4,WHITE-3"
+    },
+    {
+        "value": 79,
+        "name": "Death's Cap",
+        "descr": "PHYS+13,BLACK+17,WHITE-11"
+    },
+    {
+        "value": 80,
+        "name": "White Gar",
+        "descr": "Light"
+    },
+    {
+        "value": 81,
+        "name": "White Cap",
+        "descr": "PHYS+5,WHITE+13"
+    },
+    {
+        "value": 82,
+        "name": "Pirate's Hel",
+        "descr": "PHYS+2"
+    },
+    {
+        "value": 83,
+        "name": "Silver Helme",
+        "descr": "PHYS+3,WHITE+1"
+    },
+    {
+        "value": 84,
+        "name": "Silver Tiar",
+        "descr": "PHYS+3,+8"
+    },
+    {
+        "value": 85,
+        "name": "Mystic Vei",
+        "descr": "FIRE+7,ICE+11,WHITE+5"
+    },
+    {
+        "value": 86,
+        "name": "King's Crow",
+        "descr": "PHYS+17"
+    },
+    {
+        "value": 87,
+        "name": "Burning Ban",
+        "descr": "FIRE+6,ICE-4"
+    },
+    {
+        "value": 88,
+        "name": "Ice Bandan",
+        "descr": "FIRE-9,ICE+7"
+    },
+    {
+        "value": 89,
+        "name": "Thunder Hel",
+        "descr": "PHYS+5,ELEC+8"
+    },
+    {
+        "value": 90,
+        "name": "Demon Mas",
+        "descr": "PHYS+4,BLACK+8,WHITE-6"
+    },
+    {
+        "value": 91,
+        "name": "Royal Crow",
+        "descr": "PHYS+7,WHITE+13"
+    },
+    {
+        "value": 92,
+        "name": "Iron Glove",
+        "descr": "PHYS+2"
+    },
+    {
+        "value": 93,
+        "name": "Thunder Clu",
+        "descr": "PHYS+3,ELEC+4"
+    },
+    {
+        "value": 94,
+        "name": "Spiked Shiel",
+        "descr": "PHYS+6"
+    },
+    {
+        "value": 95,
+        "name": "Power Shiel",
+        "descr": "PHYS+19,FIRE-8,ICE-5"
+    },
+    {
+        "value": 96,
+        "name": "Honour Shiel",
+        "descr": "PHYS+14,WHITE+7"
+    },
+    {
+        "value": 97,
+        "name": "Ogre Shiel",
+        "descr": "PHYS+18,BLACK+21"
+    },
+    {
+        "value": 98,
+        "name": "Fire Shiel",
+        "descr": "PHYS+9,FIRE+12"
+    },
+    {
+        "value": 99,
+        "name": "Cold Shiel",
+        "descr": "PHYS+8,ICE+15"
+    },
+    {
+        "value": 100,
+        "name": "Nue's Shiel",
+        "descr": "PHYS+8,ELEC+15"
+    },
+    {
+        "value": 101,
+        "name": "Ginger Cak",
+        "descr": "Baked by a bored but talented"
+    },
+    {
+        "value": 102,
+        "name": "Black Lotu",
+        "descr": "Very potent in the making of potions"
+    },
+    {
+        "value": 103,
+        "name": "Olden Or",
+        "descr": "One of the jewels of Fellana"
+    },
+    {
+        "value": 104,
+        "name": "Book of Goo",
+        "descr": "The rules of behaviour for true"
+    },
+    {
+        "value": 105,
+        "name": "Flashy Cap",
+        "descr": "A cape made by the gentleman Lexar"
+    },
+    {
+        "value": 106,
+        "name": "Gnomish Nugge",
+        "descr": "A lump of gold containing"
+    },
+    {
+        "value": 107,
+        "name": "Beautiful Statu",
+        "descr": "A statue of an unknown magician"
+    },
+    {
+        "value": 108,
+        "name": "Platinum Meda",
+        "descr": "A symbol of rank"
+    },
+    {
+        "value": 109,
+        "name": "Mulmy's Ma",
+        "descr": "A tresure map made"
+    },
+    {
+        "value": 110,
+        "name": "The Sag",
+        "descr": "A saga of ancient kings"
+    },
+    {
+        "value": 111,
+        "name": "Sentoul Demo",
+        "descr": "A statue of the demon Sentoul"
+    },
+    {
+        "value": 112,
+        "name": "Battle Carvin",
+        "descr": "An engraving of a battle of"
+    },
+    {
+        "value": 113,
+        "name": "Font of Desir",
+        "descr": "A magic bowl"
+    },
+    {
+        "value": 114,
+        "name": "Wing of Victor",
+        "descr": "The seal the Kingdom of Zenobia"
+    },
+    {
+        "value": 115,
+        "name": "Forest Pendan",
+        "descr": "Containins a forest spirit"
+    },
+    {
+        "value": 116,
+        "name": "Mercur",
+        "descr": "An emblem of warriors who died"
+    },
+    {
+        "value": 117,
+        "name": "Lemming Herb",
+        "descr": "A magic herb"
+    },
+    {
+        "value": 118,
+        "name": "Zebra Fu",
+        "descr": "A very unique fur coat"
+    },
+    {
+        "value": 119,
+        "name": "Moon Ros",
+        "descr": "A white gem"
+    },
+    {
+        "value": 120,
+        "name": "Statue of Wo",
+        "descr": "A secret statue kept by a group"
+    },
+    {
+        "value": 121,
+        "name": "Song of Sodo",
+        "descr": "A forbidden poem dedicated to Diablo"
+    },
+    {
+        "value": 122,
+        "name": "Golden Goble",
+        "descr": "An ornately designed goblet"
+    },
+    {
+        "value": 123,
+        "name": "Gold Meda",
+        "descr": "A medal worn by an ancient"
+    },
+    {
+        "value": 124,
+        "name": "Amatsu Statu",
+        "descr": "A mystic statue"
+    },
+    {
+        "value": 125,
+        "name": "Dragon's Bone",
+        "descr": "Used to make magic items"
+    },
+    {
+        "value": 126,
+        "name": "Golden Boug",
+        "descr": "Grows only on an island"
+    },
+    {
+        "value": 127,
+        "name": "Evil Cense",
+        "descr": "A beautiful censer"
+    },
+    {
+        "value": 128,
+        "name": "Rainbow Shel",
+        "descr": "A peice of the shell from the"
+    },
+    {
+        "value": 129,
+        "name": "Star Fragmen",
+        "descr": "A peice of a shooting star"
+    },
+    {
+        "value": 130,
+        "name": "Black Orc's Fu",
+        "descr": "A fur of an animal which lives"
+    },
+    {
+        "value": 131,
+        "name": "Beast Coi",
+        "descr": "The oldest known coin"
+    },
+    {
+        "value": 132,
+        "name": "Empress Came",
+        "descr": "A fashion accessory popular"
+    },
+    {
+        "value": 133,
+        "name": "FireSea",
+        "descr": "\"What's this name written"
+    },
+    {
+        "value": 134,
+        "name": "Key of Destin",
+        "descr": "A symbol of the successor to"
+    },
+    {
+        "value": 135,
+        "name": "Gem of the Moor",
+        "descr": "A rare gem"
+    },
+    {
+        "value": 136,
+        "name": "Black Pear",
+        "descr": "A rare gem accessory"
+    },
+    {
+        "value": 137,
+        "name": "Golden Beehiv",
+        "descr": "A beehive"
+    },
+    {
+        "value": 138,
+        "name": "Big Troph",
+        "descr": "A stuffed behemoth"
+    },
+    {
+        "value": 139,
+        "name": "Tome of Myth",
+        "descr": "A record of the myths of the gods"
+    },
+    {
+        "value": 140,
+        "name": "Dragon's Jewe",
+        "descr": "A rare gem found only in the"
+    },
+    {
+        "value": 141,
+        "name": "Gem of Dou",
+        "descr": "A small ruby"
+    },
+    {
+        "value": 142,
+        "name": "Tablet of Yar",
+        "descr": "A tablet with the"
+    },
+    {
+        "value": 143,
+        "name": "Book of the Dea",
+        "descr": "A Book with secrets of immortality"
+    },
+    {
+        "value": 144,
+        "name": "Gem of Trut",
+        "descr": "One of the jewels of Fellana"
+    },
+    {
+        "value": 145,
+        "name": "Sable Fu",
+        "descr": "A sable fur known as"
+    },
+    {
+        "value": 146,
+        "name": "Relief Medallio",
+        "descr": "Medal of the general from"
+    },
+    {
+        "value": 147,
+        "name": "Ivory Goddes",
+        "descr": "Masterpiece of the master"
+    },
+    {
+        "value": 148,
+        "name": "Box of Salvatio",
+        "descr": "A box which can never be opened"
+    },
+    {
+        "value": 149,
+        "name": "Solom's Ches",
+        "descr": "A jewel-box made by the"
+    },
+    {
+        "value": 150,
+        "name": "Necronomico",
+        "descr": "The greatest tome of evil"
+    },
+    {
+        "value": 151,
+        "name": "Stone of Drago",
+        "descr": "/w stone BeastMaster"
+    },
+    {
+        "value": 152,
+        "name": "Undead Staf",
+        "descr": "By using this on a Mage he can"
+    },
+    {
+        "value": 153,
+        "name": "Undead Rin",
+        "descr": "Using this on a Necro"
+    },
+    {
+        "value": 154,
+        "name": "Blood Kis",
+        "descr": "A symbol of the undead"
+    },
+    {
+        "value": 155,
+        "name": "Royal Crow",
+        "descr": "Crown of royalty"
+    },
+    {
+        "value": 156,
+        "name": "Rotten Pumpki",
+        "descr": "A rotten pumpkin? Try"
+    },
+    {
+        "value": 157,
+        "name": "Promotio",
+        "descr": "Raises a character one level"
+    },
+    {
+        "value": 158,
+        "name": "Vitality Potio",
+        "descr": "Raises a character's max HP"
+    },
+    {
+        "value": 159,
+        "name": "Strength Potio",
+        "descr": "A Raises a character's STR"
+    },
+    {
+        "value": 160,
+        "name": "Speed Potio",
+        "descr": "A Raises a character's AGI"
+    },
+    {
+        "value": 161,
+        "name": "Tome of Learnin",
+        "descr": "A Raises a character's INT"
+    },
+    {
+        "value": 162,
+        "name": "Heart of Le",
+        "descr": "Raises a character's CHA"
+    },
+    {
+        "value": 163,
+        "name": "Soul Mirro",
+        "descr": "Raises a character's ALI"
+    },
+    {
+        "value": 164,
+        "name": "Lucky Char",
+        "descr": "Raises a characters LUK"
+    },
+    {
+        "value": 165,
+        "name": "Cure Potio",
+        "descr": "Heals one character 50 HP"
+    },
+    {
+        "value": 166,
+        "name": "Cure Ston",
+        "descr": "Heals one character 100 HP"
+    },
+    {
+        "value": 167,
+        "name": "Ethereal Flut",
+        "descr": "Restores a dead character"
+    },
+    {
+        "value": 168,
+        "name": "Summoning Chim",
+        "descr": "Calls forth a Neutral Unit"
+    },
+    {
+        "value": 169,
+        "name": "Cure Ank",
+        "descr": "Cures 100 HPs for each character"
+    },
+    {
+        "value": 170,
+        "name": "Egg of Wonde",
+        "descr": "Find out what grows inside by"
+    },
+    {
+        "value": 171,
+        "name": "Full Moon Ston",
+        "descr": "Summons forth a weretiger"
+    },
+    {
+        "value": 172,
+        "name": "Joker Taro",
+        "descr": "Will be randomly inscribed upon"
+    },
+    {
+        "value": 173,
+        "name": "Dinner Bel",
+        "descr": "Sends one unit back to"
+    },
+    {
+        "value": 174,
+        "name": "Dowsing Ro",
+        "descr": "Shows the location of one buried"
+    },
+    {
+        "value": 175,
+        "name": "Trade Ticke",
+        "descr": "Summons a mysterious merchant"
+    },
+    {
+        "value": 176,
+        "name": "Mass Summon",
+        "descr": "Sends friendly units to"
+    },
+    {
+        "value": 177,
+        "name": "Persuasion Spel",
+        "descr": "Wins one enemy unit to"
+    },
+    {
+        "value": 178,
+        "name": "7 League Boot",
+        "descr": "Will warp a Unit to"
+    },
+    {
+        "value": 179,
+        "name": "Termite",
+        "descr": "A bag of hungry termites"
+    },
+    {
+        "value": 180,
+        "name": "Moonbea",
+        "descr": "Changes day into night"
+    },
+    {
+        "value": 181,
+        "name": "Ray of Sunshin",
+        "descr": "Changes night into day"
+    },
+    {
+        "value": 182,
+        "name": "Crystal Bal",
+        "descr": "Shows the location of a hidden"
+    },
+    {
+        "value": 183,
+        "name": "Glass Pumpki",
+        "descr": "Allows one to summon"
+    },
+    {
+        "value": 184,
+        "name": "Star of Heroe",
+        "descr": "An emblem which may only be"
+    },
+    {
+        "value": 185,
+        "name": "Bell of Ligh",
+        "descr": "Will bring life to cold stone"
+    },
+    {
+        "value": 186,
+        "name": "Grai",
+        "descr": "One of the 3 Mystic Treasures"
+    },
+    {
+        "value": 187,
+        "name": "Mystic Armban",
+        "descr": "One of the 3 Mystic Treasures"
+    },
+    {
+        "value": 188,
+        "name": "Garne",
+        "descr": "The 1st Stone of Zodiac"
+    },
+    {
+        "value": 189,
+        "name": "Amethys",
+        "descr": "The 2nd Stone of Zodiac"
+    },
+    {
+        "value": 190,
+        "name": "Aquamarin",
+        "descr": "The 3rd Stone of Zodiac"
+    },
+    {
+        "value": 191,
+        "name": "Diamon",
+        "descr": "The 4th Stone of Zodiac"
+    },
+    {
+        "value": 192,
+        "name": "Emeral",
+        "descr": "The 5th Stone of Zodiac"
+    },
+    {
+        "value": 193,
+        "name": "Pear",
+        "descr": "The 6th Stone of Zodiac"
+    },
+    {
+        "value": 194,
+        "name": "Rub",
+        "descr": "The 7th Stone of Zodiac"
+    },
+    {
+        "value": 195,
+        "name": "Perido",
+        "descr": "The 8th Stone of Zodiac"
+    },
+    {
+        "value": 196,
+        "name": "Sapphir",
+        "descr": "The 9th Stone of Zodiac"
+    },
+    {
+        "value": 197,
+        "name": "Opa",
+        "descr": "The 10th Stone of Zodiac"
+    },
+    {
+        "value": 198,
+        "name": "Topa",
+        "descr": "The 11th Stone of Zodiac"
+    },
+    {
+        "value": 199,
+        "name": "Turquois",
+        "descr": "The 12th Stone of Zodiac"
+    },
+    {
+        "value": 200,
+        "name": "Gem of Al",
+        "descr": "A symbol of Betrayal"
+    }
+]

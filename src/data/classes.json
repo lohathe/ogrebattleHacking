@@ -1,0 +1,406 @@
+[
+    {
+        "value": 0,
+        "name": "Buildings"
+    },
+    {
+        "value": 1,
+        "name": "Fighter"
+    },
+    {
+        "value": 2,
+        "name": "Knight"
+    },
+    {
+        "value": 3,
+        "name": "Paladin"
+    },
+    {
+        "value": 4,
+        "name": "Wild Man"
+    },
+    {
+        "value": 5,
+        "name": "Evil One"
+    },
+    {
+        "value": 6,
+        "name": "Samurai"
+    },
+    {
+        "value": 7,
+        "name": "Samurai Master"
+    },
+    {
+        "value": 8,
+        "name": "Ninja"
+    },
+    {
+        "value": 9,
+        "name": "Ninja Master"
+    },
+    {
+        "value": 10,
+        "name": "Amazon"
+    },
+    {
+        "value": 11,
+        "name": "Valkyrie"
+    },
+    {
+        "value": 12,
+        "name": "Muse"
+    },
+    {
+        "value": 13,
+        "name": "Beast Man"
+    },
+    {
+        "value": 14,
+        "name": "Beast Master"
+    },
+    {
+        "value": 15,
+        "name": "Dragoner"
+    },
+    {
+        "value": 16,
+        "name": "Dragon Master"
+    },
+    {
+        "value": 17,
+        "name": "Doll Mage"
+    },
+    {
+        "value": 18,
+        "name": "Doll Master"
+    },
+    {
+        "value": 19,
+        "name": "Wizard"
+    },
+    {
+        "value": 20,
+        "name": "Mage"
+    },
+    {
+        "value": 21,
+        "name": "Sorcerer"
+    },
+    {
+        "value": 22,
+        "name": "Lich"
+    },
+    {
+        "value": 23,
+        "name": "Witch"
+    },
+    {
+        "value": 24,
+        "name": "Cleric"
+    },
+    {
+        "value": 25,
+        "name": "Shaman"
+    },
+    {
+        "value": 26,
+        "name": "Monk"
+    },
+    {
+        "value": 27,
+        "name": "Mermaid"
+    },
+    {
+        "value": 28,
+        "name": "Nixie"
+    },
+    {
+        "value": 29,
+        "name": "WereWolf"
+    },
+    {
+        "value": 30,
+        "name": "Tigerman"
+    },
+    {
+        "value": 31,
+        "name": "Beast Man (Tigerman/Werewolf day form)"
+    },
+    {
+        "value": 32,
+        "name": "Vampire Awake"
+    },
+    {
+        "value": 33,
+        "name": "Vampire Asleep"
+    },
+    {
+        "value": 34,
+        "name": "Princess"
+    },
+    {
+        "value": 35,
+        "name": "Pumpkin"
+    },
+    {
+        "value": 36,
+        "name": "Holloween"
+    },
+    {
+        "value": 37,
+        "name": "Golem"
+    },
+    {
+        "value": 38,
+        "name": "Rock Golem"
+    },
+    {
+        "value": 39,
+        "name": "Iron Golem"
+    },
+    {
+        "value": 40,
+        "name": "Giant"
+    },
+    {
+        "value": 41,
+        "name": "Ice Giant"
+    },
+    {
+        "value": 42,
+        "name": "Titan"
+    },
+    {
+        "value": 43,
+        "name": "Fire Giant"
+    },
+    {
+        "value": 44,
+        "name": "Hell Hound"
+    },
+    {
+        "value": 45,
+        "name": "Cereberus"
+    },
+    {
+        "value": 46,
+        "name": "Octopus"
+    },
+    {
+        "value": 47,
+        "name": "Kraken"
+    },
+    {
+        "value": 48,
+        "name": "Dragon"
+    },
+    {
+        "value": 49,
+        "name": "Red Dragon"
+    },
+    {
+        "value": 50,
+        "name": "Silver Dragon"
+    },
+    {
+        "value": 51,
+        "name": "Black Dragon"
+    },
+    {
+        "value": 52,
+        "name": "Red Dragon II"
+    },
+    {
+        "value": 53,
+        "name": "Salamander"
+    },
+    {
+        "value": 54,
+        "name": "Gold Dragon"
+    },
+    {
+        "value": 55,
+        "name": "Platinum"
+    },
+    {
+        "value": 56,
+        "name": "Tiamat"
+    },
+    {
+        "value": 57,
+        "name": "Zombie Dragon"
+    },
+    {
+        "value": 58,
+        "name": "Skeleton"
+    },
+    {
+        "value": 59,
+        "name": "Wraith"
+    },
+    {
+        "value": 60,
+        "name": "Ghost"
+    },
+    {
+        "value": 61,
+        "name": "Phantom"
+    },
+    {
+        "value": 62,
+        "name": "Hawk Man"
+    },
+    {
+        "value": 63,
+        "name": "Eagle Man"
+    },
+    {
+        "value": 64,
+        "name": "Raven Man"
+    },
+    {
+        "value": 65,
+        "name": "Angel"
+    },
+    {
+        "value": 66,
+        "name": "Cherubim"
+    },
+    {
+        "value": 67,
+        "name": "Seraphim"
+    },
+    {
+        "value": 68,
+        "name": "Imp"
+    },
+    {
+        "value": 69,
+        "name": "Demon"
+    },
+    {
+        "value": 70,
+        "name": "Devil"
+    },
+    {
+        "value": 71,
+        "name": "Faerie"
+    },
+    {
+        "value": 72,
+        "name": "Pixie"
+    },
+    {
+        "value": 73,
+        "name": "Sylph"
+    },
+    {
+        "value": 74,
+        "name": "Gryphon"
+    },
+    {
+        "value": 75,
+        "name": "Cockatrice"
+    },
+    {
+        "value": 76,
+        "name": "Wyrm"
+    },
+    {
+        "value": 77,
+        "name": "Wyvern"
+    },
+    {
+        "value": 78,
+        "name": "Male or Female Lord (Slice/Iainuki)"
+    },
+    {
+        "value": 79,
+        "name": "Male or Female Lord (Poison/Phantom)"
+    },
+    {
+        "value": 80,
+        "name": "Male or Female Lord (Banish/Ice Cloud)"
+    },
+    {
+        "value": 81,
+        "name": "Male or Female Lord (Slice/Thunder)"
+    },
+    {
+        "value": 82,
+        "name": "Wise Man (Random Magic attack X 6)"
+    },
+    {
+        "value": 83,
+        "name": "Diablo Head 1 (crash/Fire attacks X 2)"
+    },
+    {
+        "value": 84,
+        "name": "Diablo Head 2 (crash/Ice attacks X 2)"
+    },
+    {
+        "value": 85,
+        "name": "Diablo Head 3 (crash/fire attacks X 2)"
+    },
+    {
+        "value": 86,
+        "name": "Black Queen (Ice/Multiple Strong Magic X 5)"
+    },
+    {
+        "value": 87,
+        "name": "Highlander (Multiple \"magic\" X 5)"
+    },
+    {
+        "value": 88,
+        "name": "Prince (Uses Enhanced Chop Techniques X 3 )"
+    },
+    {
+        "value": 89,
+        "name": "Prince (purple cloak"
+    },
+    {
+        "value": 90,
+        "name": "Prince (Chop X 3)"
+    },
+    {
+        "value": 91,
+        "name": "Gemini (Nova/Kick Moves X3)"
+    },
+    {
+        "value": 93,
+        "name": "Dandy"
+    },
+    {
+        "value": 94,
+        "name": "Dandy"
+    },
+    {
+        "value": 95,
+        "name": "General (enemy)"
+    },
+    {
+        "value": 96,
+        "name": "Jumping General (enemy)"
+    },
+    {
+        "value": 97,
+        "name": "Running Jumping General (enemy)"
+    },
+    {
+        "value": 98,
+        "name": "Red Running Jumping General (enemy)"
+    },
+    {
+        "value": 99,
+        "name": "General (Slice/Iainaku)"
+    },
+    {
+        "value": 100,
+        "name": "General (Slice/Blade)"
+    },
+    {
+        "value": 101,
+        "name": "Dragoon (Green)"
+    }
+]

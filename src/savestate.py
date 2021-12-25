@@ -1,4 +1,19 @@
 import collections
+import json
+
+def extractJson(file_name):
+    with open(file_name, "r") as f:
+        return json.load(f)
+
+ITEMS = extractJson("data/items.json")
+CLASSES = extractJson("data/classes.json")
+NAMES = extractJson("data/names.json")
+
+def findInsideList(list_, key, value, default=None):
+    for el in list_:
+        if el[key] == value:
+            return el
+    return default
 
 def bytes_to_int(data):
     # type: (bytes) -> int
@@ -31,29 +46,39 @@ def num_to_bytes(data):
 def bytes_to_class(data):
     # type: (bytes) -> str
     assert(isinstance(data, (bytes, )))
-    return "unknown"
+    res = findInsideList(CLASSES, "value", bytes_to_int(data), {"name": "unknown"})
+    return res["name"]
 
 def class_to_bytes(data):
     # type: (str) -> bytes
-    return [0x00, 0x00]
+    res = findInsideList(CLASSES, "name", data, {"value": 0})
+    return int_to_bytes(res["value"])
 
 def bytes_to_name(data):
     # type: (bytes) -> str
     assert(isinstance(data, (bytes, )))
-    return "unknown"
+    res = findInsideList(NAMES, "value", bytes_to_int(data), {"name": "unknown"})
+    return res["name"]
 
 def name_to_bytes(data):
     # type: (str) -> bytes
-    return [0x00, 0x00]
+    res = findInsideList(NAMES, "name", data, {"value": 0})
+    return int_to_bytes(res["value"])
 
 def bytes_to_item(data):
     # type: (bytes) -> str
     assert(isinstance(data, (bytes, )))
-    return "none"
+    if bytes_to_int(data) == 0:
+        return "none"
+    res = findInsideList(ITEMS, "value", bytes_to_int(data), {"name": "unknown", "descr": ""})
+    return res["name"]
 
 def item_to_bytes(data):
     # type: (str) -> bytes
-    return [0x00]
+    if data == "none":
+        return [0x00]
+    res = findInsideList(ITEMS, "name", data, {"value": 0})
+    return int_to_bytes(res["value"])
 
 ReadData = collections.namedtuple("ReadData",
     ("name", "value", "formatted", "raw", "address"))
