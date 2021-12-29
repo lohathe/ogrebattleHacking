@@ -17,7 +17,7 @@ def findInsideList(list_, key, value, default=None):
 
 def bytes_to_int(data):
     # type: (bytes) -> int
-    assert(isinstance(data, (bytes, )))
+    assert(isinstance(data, (bytes, bytearray, )))
     size = len(data)
     res = 0
     for i in reversed(range(size)):
@@ -36,7 +36,7 @@ def int_to_bytes(data):
 
 def bytes_to_num(data):
     # type: (bytes) -> str
-    assert(isinstance(data, (bytes, )))
+    assert(isinstance(data, (bytes, bytearray, )))
     return str(bytes_to_int(data))
 
 def num_to_bytes(data):
@@ -45,7 +45,7 @@ def num_to_bytes(data):
 
 def bytes_to_class(data):
     # type: (bytes) -> str
-    assert(isinstance(data, (bytes, )))
+    assert(isinstance(data, (bytes, bytearray, )))
     res = findInsideList(CLASSES, "value", bytes_to_int(data), {"name": "unknown"})
     return res["name"]
 
@@ -56,7 +56,7 @@ def class_to_bytes(data):
 
 def bytes_to_name(data):
     # type: (bytes) -> str
-    assert(isinstance(data, (bytes, )))
+    assert(isinstance(data, (bytes, bytearray, )))
     res = findInsideList(NAMES, "value", bytes_to_int(data), {"name": "unknown"})
     return res["name"]
 
@@ -67,7 +67,7 @@ def name_to_bytes(data):
 
 def bytes_to_item(data):
     # type: (bytes) -> str
-    assert(isinstance(data, (bytes, )))
+    assert(isinstance(data, (bytes, bytearray, )))
     if bytes_to_int(data) == 0:
         return "none"
     res = findInsideList(ITEMS, "value", bytes_to_int(data), {"name": "unknown", "descr": ""})
@@ -129,7 +129,7 @@ class OgreBattleSaveState(object):
         self.data = []
         with open(file, "rb") as f:
             f.seek(OgreBattleSaveState.SLOT_SIZE*index)
-            self.data = f.read(OgreBattleSaveState.SLOT_SIZE)
+            self.data = bytearray(f.read(OgreBattleSaveState.SLOT_SIZE))
 
     def _find_unit_info_entry(self, info_name):
         entry = [x for x in OgreBattleSaveState.UNIT_LAYOUT if x[3] == info_name]
