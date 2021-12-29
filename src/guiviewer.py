@@ -101,31 +101,43 @@ class OgreBattleSaveStateGUI():
 
         root = Tk()
         root.title("Ogre Battle: MotBQ - Save State Editor")
+        style = ttk.Style()
+        style.configure("ToolButton.TButton", relief=FLAT, border=5)
+        #style.configure(".", font="helvetica 16")
+
+        # toolbar
+        toolbar = ttk.Frame(root)
+        toolbar.grid(column=0, columnspan=3, row=0, sticky=(E, W))
+        toolbar.columnconfigure(2, weight=1)
+        _open_img = PhotoImage(file="data/icon_open.gif")
+        _open = ttk.Button(toolbar, image=_open_img, text="OPEN", style="ToolButton.TButton", compound=TOP, command=self.on_open)
+        _open.grid(column=0, row=0, padx=2, pady=4, sticky=(W))
+        save_img = PhotoImage(file="data/icon_save.gif")
+        save = ttk.Button(toolbar, image=save_img, text="SAVE", style="ToolButton.TButton", compound=TOP, command=self.on_save)
+        save.grid(column=1, row=0, padx=2, pady=4, sticky=(W))
+        separator = ttk.Separator(toolbar, orient=HORIZONTAL)
+        separator.grid(column=0, columnspan=3, row=1, sticky=(E, W))
 
         # file name reference
         file_label = ttk.Label(root, text=file)
-        file_label.grid(column=0, columnspan=3, row=0, sticky=(E, W))
+        file_label.grid(column=0, columnspan=3, row=1, sticky=(E, W))
 
         # slot selector
         self.slot_var = StringVar(value=0)
         slot_1 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
-        slot_1.grid(column=0, row=1, sticky=W)
+        slot_1.grid(column=0, row=2, sticky=W)
         slot_2 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
-        slot_2.grid(column=1, row=1, sticky=W)
+        slot_2.grid(column=1, row=2, sticky=W)
         slot_3 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 3", value=2)
-        slot_3.grid(column=2, row=1, sticky=W)
+        slot_3.grid(column=2, row=2, sticky=W)
 
         # unit selector
         self.unit_selctor_var = StringVar(value=0)
         unit_selector = ttk.Spinbox(root, from_=0, to=100, increment=1, textvariable=self.unit_selctor_var, command=self.on_select_unit)
-        unit_selector.grid(column=0, columnspan=3, row=2, sticky=(E, W))
+        unit_selector.grid(column=0, columnspan=3, row=3, sticky=(E, W))
         self.unit_viewer = UnitWidget(root)
-        self.unit_viewer.grid(column=0, columnspan=3, row=3)#, sticky=(N, E, S, W))
+        self.unit_viewer.grid(column=0, columnspan=3, row=4)#, sticky=(N, E, S, W))
         self.unit_viewer.bind("<<modified>>", self.on_unit_modified)
-
-        # save button
-        save = ttk.Button(root, text="SAVE", command=self.on_save)
-        save.grid(column=2, row=4, sticky=(E, W))
 
         # status bar
         status_bar = StringVar()
@@ -139,7 +151,6 @@ class OgreBattleSaveStateGUI():
         root.rowconfigure(3, weight=1)
         root.rowconfigure(5, weight=1)
         for child in root.winfo_children():
-            print(child, child.winfo_class())
             child.grid_configure(padx=5, pady=5)
 
         # display something sensible
@@ -183,6 +194,9 @@ class OgreBattleSaveStateGUI():
 
     def on_save(self):
         self.update_status_bar("ERROR: 'save' function not implemented")
+
+    def on_open(self):
+        self.update_status_bar("ERROR: 'open' function not implemented")
 
     def update_status_bar(self, message):
         self.status_bar.set(message)
