@@ -10,7 +10,11 @@ class UnitWidget(ttk.Frame):
 
     def __init__(self, parent):
         super(UnitWidget, self).__init__(parent)
-        self.configure(padding="10 10 10 10")
+        self.configure(
+            padding="10 10 10 10",
+            borderwidth=3,
+            relief=GROOVE,
+        )
         self._save_on_update = True
 
         self.editors = {}
@@ -40,6 +44,10 @@ class UnitWidget(ttk.Frame):
         self._create_num_editor("Luk:", "LUK", 2, 7)
 
         self.event_add("<<modified>>", "None")
+
+        # some layout on main window
+        for child in self.winfo_children():
+            child.grid_configure(padx=5, pady=5)
 
         self.reset()
 
@@ -112,7 +120,7 @@ class OgreBattleSaveStateGUI():
         unit_selector = ttk.Spinbox(root, from_=0, to=100, increment=1, textvariable=self.unit_selctor_var, command=self.on_select_unit)
         unit_selector.grid(column=0, columnspan=3, row=2, sticky=(E, W))
         self.unit_viewer = UnitWidget(root)
-        self.unit_viewer.grid(column=0, columnspan=3, row=3, sticky=(N, E, S, W))
+        self.unit_viewer.grid(column=0, columnspan=3, row=3)#, sticky=(N, E, S, W))
         self.unit_viewer.bind("<<modified>>", self.on_unit_modified)
 
         # save button
@@ -124,6 +132,15 @@ class OgreBattleSaveStateGUI():
         status_bar_entry = ttk.Label(root, textvariable=status_bar)
         status_bar_entry.grid(column=0, columnspan=3, row=5, sticky=(E, W))
         self.status_bar = status_bar
+
+        # some layout on main window
+        for i in range(3):
+            root.columnconfigure(i, weight=1)
+        root.rowconfigure(3, weight=1)
+        root.rowconfigure(5, weight=1)
+        for child in root.winfo_children():
+            print(child, child.winfo_class())
+            child.grid_configure(padx=5, pady=5)
 
         # display something sensible
         self.on_select_slot()
