@@ -43,6 +43,22 @@ def num_to_bytes(data):
     # type: (str)-> bytes
     return int_to_bytes(int(data))
 
+def bytes_to_str(data):
+    # type: (bytes) -> str
+    assert(isinstance(data, (bytes, bytearray, )))
+    i = len(data)-1
+    while i >= 0 and data[i] == 0:
+        i = i-1
+    return data[:i+1].decode("ascii")
+
+def str_to_bytes(data):
+    # type: (str) -> bytes
+    # NOTE: 'ascii' can be a little too much conservative...
+    # NOTE: we are returning `bytes`, and not an `array[int]`, so this function
+    #       can create some problems since they are not exactly the same, but
+    #       hopefully their interface is similar enough to make everything work
+    return bytes(data, encoding="ascii")
+
 def bytes_to_class(data):
     # type: (bytes) -> str
     assert(isinstance(data, (bytes, bytearray, )))
@@ -90,6 +106,7 @@ class OgreBattleSaveState(object):
     """
 
     SLOT_SIZE = 0xAAB
+    OPINION_LEADER_NAME_REF = 0x07a4
 
     # offset, size, number of items, field name, deserialize func, serialize func
     UNIT_LAYOUT = [
@@ -112,11 +129,13 @@ class OgreBattleSaveState(object):
 
     GROUPS_LAYOUT = [
         (0x078b, 1, 125, "units formation", bytes_to_num),
-        (0x0808, 1, 125, "units barraks", bytes_to_num)
+        (0x0808, 1, 125, "units barraks", bytes_to_num),
+        (0x0000, 0, 0, "is group leader", bytes_to_num),
     ]
 
     MISC_LAYOUT = [
         (0x0aa9, 2, 1, "CHECKSUM", bytes_to_num, num_to_bytes),
+        (0x0911, 8, 1, "LEADER_NAME", bytes_to_str, str_to_bytes),
         (0x0000, 1, 1, "money", bytes_to_num, num_to_bytes),
         (0x0000, 1, 1, "reputation", bytes_to_num, num_to_bytes),
     ]
@@ -130,6 +149,21 @@ class OgreBattleSaveState(object):
         with open(file, "rb") as f:
             f.seek(OgreBattleSaveState.SLOT_SIZE*index)
             self.data = bytearray(f.read(OgreBattleSaveState.SLOT_SIZE))
+
+        # update the name of the opinion leader
+        offset, size, _1, info_name, serialize, _2 = self.MISC_LAYOUT[1]
+        assert(info_name == "LEADER_NAME")
+        try:
+            leader_name = serialize(self.data[offset:offset+size])
+        except Exception as e:
+            # in case the slot is empty the bytes that should contain the
+            # leader's name are filled with non-ascii bytes!
+            leader_name = "unknown"
+        NAMES.append({
+            "value": self.OPINION_LEADER_NAME_REF,
+            "name": leader_name,
+        })
+
 
     def _find_unit_info_entry(self, info_name):
         entry = [x for x in OgreBattleSaveState.UNIT_LAYOUT if x[3] == info_name]
