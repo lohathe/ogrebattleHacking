@@ -174,7 +174,7 @@ class OgreBattleSaveState(object):
         return entry[0]
 
     def get_unit_info(self, unit_index, info_name):
-        offset, size, count_max, _1, serialize, _2 = self._find_unit_info_entry(info_name)
+        offset, size, count_max, _1, deserialize, _2 = self._find_unit_info_entry(info_name)
         if unit_index >= count_max:
             raise RuntimeError(f"Going out-of-bound using unit_index '{unit_index}' for '{name}': max items are {count_max}!")
         address = offset + unit_index*size
@@ -182,30 +182,34 @@ class OgreBattleSaveState(object):
         res = ReadData(
             name=info_name,
             value=bytes_to_int(bytes_),
-            formatted=serialize(bytes_),
+            formatted=deserialize(bytes_),
             raw=bytes_,
             address=(self.index*OgreBattleSaveState.SLOT_SIZE) + address,
         )
         return res
 
     def set_unit_info(self, unit_index, info_name, new_value):
-        offset, size, count_max, _1, _2, deserialize = self._find_unit_info_entry(info_name)
+        offset, size, count_max, _1, _2, serialize = self._find_unit_info_entry(info_name)
         if unit_index >= count_max:
             raise RuntimeError(f"Going out-of-bound using unit_index '{unit_index}' for '{name}': max items are {count_max}!")
         address = offset + unit_index*size
-        bytes_ = deserialize(new_value)
-        if len(bytes_) != size:
+        bytes_ = serialize(new_value)
+        if len(bytes_) >= size:
             raise RuntimeError(f"Bad size for '{info_name}': '{new_value}'->'{bytes_}'")
+        # during serialization we do not know the expected number of bytes to
+        # fill, but here we do. Hopefully padding with zeroes is always ok!
+        while len(bytes_) < size:
+            bytes_.append(0)
         self.data[address:address+size] = bytes_
 
     def get_checksum(self):
-        address, size, _1, info_name, serialize, deserialize = OgreBattleSaveState.MISC_LAYOUT[0]
+        address, size, _1, info_name, deserialize, _2 = OgreBattleSaveState.MISC_LAYOUT[0]
         assert(info_name == "CHECKSUM")
         bytes_ = self.data[address:address+size]
         res = ReadData(
             name=info_name,
             value=bytes_to_int(bytes_),
-            formatted=serialize(bytes_),
+            formatted=deserialize(bytes_),
             raw=bytes_,
             address=(self.index*OgreBattleSaveState.SLOT_SIZE) + address,
         )
