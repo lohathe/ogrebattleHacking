@@ -183,11 +183,15 @@ class OgreBattleSaveStateGUI():
         frame = ttk.Frame(parent)
         frame.columnconfigure(1, weight=1)
         character_var = IntVar(value=0)
-        selector = ttk.Spinbox(frame, from_=0, to=100, increment=1, textvariable=character_var, command=self.on_select_unit)
+        selector = ttk.Spinbox(frame, from_=0, to=100, increment=1, textvariable=character_var, command=self.on_select_character)
         selector.grid(column=0, columnspan=3, row=0, sticky=(E, W))
+        button_prev = ttk.Button(frame, text="<", style="ToolButton.TButton", command=lambda:self.on_advance_character(-1))
+        button_prev.grid(column=0, row=1, sticky=(N, S))
         character_info = CharacterInfoWidget(frame)
         character_info.grid(column=1, row=1, sticky=(E, W))
         character_info.bind("<<modified>>", self.on_unit_modified)
+        button_next = ttk.Button(frame, text=">", style="ToolButton.TButton", command=lambda:self.on_advance_character(+1))
+        button_next.grid(column=2, row=1, sticky=(N, S))
 
         self.character_var = character_var
         self.character_info = character_info
@@ -207,7 +211,7 @@ class OgreBattleSaveStateGUI():
         self.status_bar_entry = status_bar_entry
         return frame
 
-    def _update_backend(self):
+    def __update_backend(self):
         file = self.file_var.get()[6:]
         slot = self.slot_var.get()
         self.obss = savestate.OgreBattleSaveState(file, slot)
@@ -215,21 +219,44 @@ class OgreBattleSaveStateGUI():
 
     def on_select_slot(self, *args, **kwargs):
         try:
-            self._update_backend()
+            self.__update_backend()
             self.character_var.set(0)
-            self.on_select_unit()
+            self.on_select_character()
         except Exception as e:
             print("ERROR 'on_select_slot': {}".format(e))
 
-    def on_select_unit(self, *args, **kwargs):
+    def on_select_character(self):
         try:
             new_index = self.character_var.get()
-            new_unit_data = {}
-            for key in ("NAME", "CLASS", "LVL", "EXP", "HP", "STR", "AGI", "INT", "CHA", "ALI", "LUK", "COST", "ITEM",):
-                new_unit_data[key] = self.obss.get_unit_info(new_index, key)
-            self.character_info.update(new_unit_data)
         except Exception as e:
-            print("ERROR 'on_select_unit': {}".format(e))
+            self.warning_message("Could not select specified character")
+            print("ERROR 'on_select_character': {}".format(e))
+        else:
+            self.__show_character_info(new_index)
+
+    def on_advance_character(self, delta):
+        try:
+            current = self.character_var.get()
+            new_index = current + delta
+            self.character_var.set(new_index)
+        except Exception as e:
+            self.warning_message("Could not advance to next/prev character")
+            print("ERROR 'on_advance_character': {}".format(e))
+        else:
+            self.__show_character_info(new_index)
+
+    def __show_character_info(self, character_index):
+        INFOS = ["NAME", "CLASS", "LVL", "EXP", "HP", "STR", "AGI", "INT", "CHA", "ALI", "LUK", "COST", "ITEM",]
+        try:
+            character_info = {}
+            for key in INFOS:
+                character_info[key] = self.obss.get_unit_info(character_index, key)
+            self.character_info.update(character_info)
+            character_name = character_info["NAME"].formatted
+            self.success_message(f"Showing info for '{character_name}' (index {character_index})")
+        except Exception as e:
+            self.warning_message(f"Problems retrieving info for character at index {character_index}")
+            print("ERROR '__show_character_info': {}".format(e))
 
     def on_unit_modified(self, event, *args, **kwargs):
         try:
