@@ -6,6 +6,9 @@ import argparse
 import savestate
 
 
+FONT = "verbena 12"
+FONT_BOLD = FONT + " bold"
+
 class UnitWidget(ttk.Frame):
 
     def __init__(self, parent):
@@ -103,7 +106,8 @@ class OgreBattleSaveStateGUI():
         root.title("Ogre Battle: MotBQ - Save State Editor")
         style = ttk.Style()
         style.configure("ToolButton.TButton", relief=FLAT, border=5)
-        #style.configure(".", font="helvetica 16")
+        style.configure("Success.TLabel", foreground="#297f00", font=FONT_BOLD)
+        style.configure("Error.TLabel", foreground="#7f0000", font=FONT_BOLD)
 
         # toolbar
         toolbar = ttk.Frame(root)
@@ -144,6 +148,7 @@ class OgreBattleSaveStateGUI():
         status_bar_entry = ttk.Label(root, textvariable=status_bar)
         status_bar_entry.grid(column=0, columnspan=3, row=5, sticky=(E, W))
         self.status_bar = status_bar
+        self.status_bar_entry = status_bar_entry
 
         # some layout on main window
         for i in range(3):
@@ -187,18 +192,24 @@ class OgreBattleSaveStateGUI():
             unit_index = int(self.unit_selctor_var.get())
             self.obss.set_unit_info(unit_index, name, value)
             message = f"{name} successfully updated"
+            self.success_message(message)
         except Exception as e:
             message = f"Error while updating {name}"
+            self.warning_message(message)
             print("ERROR 'on_unit_modified': {}".format(e))
-        self.update_status_bar(message)
 
     def on_save(self):
-        self.update_status_bar("ERROR: 'save' function not implemented")
+        self.warning_message("ERROR: 'save' function not implemented")
 
     def on_open(self):
-        self.update_status_bar("ERROR: 'open' function not implemented")
+        self.warning_message("ERROR: 'open' function not implemented")
 
-    def update_status_bar(self, message):
+    def warning_message(self, message):
+        self.status_bar_entry.config(style="Error.TLabel")
+        self.status_bar.set(message)
+
+    def success_message(self, message):
+        self.status_bar_entry.config(style="Success.TLabel")
         self.status_bar.set(message)
 
 
