@@ -101,8 +101,6 @@ class UnitWidget(ttk.Frame):
 class OgreBattleSaveStateGUI():
 
     def __init__(self, file):
-        self.file = file
-        self.slot = 0
         self.obss = None
 
         root = Tk()
@@ -127,11 +125,12 @@ class OgreBattleSaveStateGUI():
         separator.grid(column=0, columnspan=3, row=1, sticky=(E, W))
 
         # file name reference
-        file_label = ttk.Label(root, text=file)
+        self.file_var = StringVar(value=file)
+        file_label = ttk.Label(root, textvariable=self.file_var)
         file_label.grid(column=0, columnspan=3, row=1, sticky=(E, W))
 
         # slot selector
-        self.slot_var = StringVar(value=0)
+        self.slot_var = IntVar(value=0)
         slot_1 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
         slot_1.grid(column=0, row=2)
         slot_2 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
@@ -168,13 +167,13 @@ class OgreBattleSaveStateGUI():
         root.mainloop()
 
     def _update_backend(self):
-        self.obss = savestate.OgreBattleSaveState(self.file, self.slot)
+        file = self.file_var.get()
+        slot = self.slot_var.get()
+        self.obss = savestate.OgreBattleSaveState(file, slot)
         self.unit_viewer.reset()
 
     def on_select_slot(self, *args, **kwargs):
         try:
-            new_index = int(self.slot_var.get())
-            self.slot = new_index
             self._update_backend()
             self.unit_selector_var.set(0)
             self.on_select_unit()
@@ -214,7 +213,7 @@ class OgreBattleSaveStateGUI():
     def on_open(self):
         new_file = filedialog.askopenfilename()
         if new_file:
-            self.file = new_file
+            self.file_var.set(new_file)
             self.slot_var.set(0)
             self.on_select_slot()
             self.success_message("Changed file!")
