@@ -195,7 +195,7 @@ class OgreBattleSaveState(object):
             raise RuntimeError(f"Going out-of-bound using unit_index '{unit_index}' for '{name}': max items are {count_max}!")
         address = offset + unit_index*size
         bytes_ = serialize(new_value)
-        if len(bytes_) >= size:
+        if len(bytes_) > size:
             raise RuntimeError(f"Bad size for '{info_name}': '{new_value}'->'{bytes_}'")
         # during serialization we do not know the expected number of bytes to
         # fill, but here we do. Hopefully padding with zeroes is always ok!
