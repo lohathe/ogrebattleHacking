@@ -105,6 +105,7 @@ class OgreBattleSaveStateGUI():
 
         root = Tk()
         root.title("Ogre Battle: MotBQ - Save State Editor")
+        root.geometry("800x600")
         style = ttk.Style()
         style.configure("ToolButton.TButton", relief=FLAT, borderwidth=2, padding=2)
         style.configure("Success.TLabel", foreground="#297f00", font=FONT_BOLD)
@@ -124,19 +125,22 @@ class OgreBattleSaveStateGUI():
         separator = ttk.Separator(toolbar, orient=HORIZONTAL)
         separator.grid(column=0, columnspan=3, row=1, sticky=(E, W))
 
-        # file name reference
-        self.file_var = StringVar(value=file)
-        file_label = ttk.Label(root, textvariable=self.file_var)
-        file_label.grid(column=0, columnspan=3, row=1, sticky=(E, W))
-
-        # slot selector
+        # file name reference & slot selector
+        slot_selector_frame = ttk.LabelFrame(root, text="savestate")#, labelwidget=file_label, labelanchor="nw")
+        slot_selector_frame.grid(column=0, columnspan=3, row=1, sticky=(E, W))
+        for i in range(3):
+            slot_selector_frame.columnconfigure(i, weight=1)
+        self.file_var = StringVar(value=f"file: {file}")
+        file_label = ttk.Label(slot_selector_frame, textvariable=self.file_var, anchor=CENTER)
+        slot_selector_frame.configure(labelwidget=file_label, labelanchor="n")
+        #file_label.grid(column=0, columnspan=3, row=1, sticky=(E, W), padx=10, pady=5)
         self.slot_var = IntVar(value=0)
-        slot_1 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
-        slot_1.grid(column=0, row=2)
-        slot_2 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
-        slot_2.grid(column=1, row=2)
-        slot_3 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 3", value=2)
-        slot_3.grid(column=2, row=2)
+        slot_1 = ttk.Radiobutton(slot_selector_frame, variable=self.slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
+        slot_1.grid(column=0, row=2, padx=5, pady=5)
+        slot_2 = ttk.Radiobutton(slot_selector_frame, variable=self.slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
+        slot_2.grid(column=1, row=2, padx=5, pady=5)
+        slot_3 = ttk.Radiobutton(slot_selector_frame, variable=self.slot_var, command=self.on_select_slot, text="SLOT 3", value=2)
+        slot_3.grid(column=2, row=2, padx=5, pady=5)
 
         # unit selector
         self.unit_selector_var = StringVar(value=0)
@@ -147,17 +151,17 @@ class OgreBattleSaveStateGUI():
         self.unit_viewer.bind("<<modified>>", self.on_unit_modified)
 
         # status bar
+        separator = ttk.Separator(root, orient=HORIZONTAL)
+        separator.grid(column=0, columnspan=3, row=5, sticky=(E, W))
         status_bar = StringVar()
         status_bar_entry = ttk.Label(root, textvariable=status_bar)
-        status_bar_entry.grid(column=0, columnspan=3, row=5, sticky=(E, W))
+        status_bar_entry.grid(column=0, columnspan=3, row=6, sticky=(E, W))
         self.status_bar = status_bar
         self.status_bar_entry = status_bar_entry
 
         # some layout on main window
         for i in range(3):
             root.columnconfigure(i, weight=1)
-        root.rowconfigure(3, weight=1)
-        root.rowconfigure(5, weight=1)
         for child in root.winfo_children():
             child.grid_configure(padx=5, pady=5)
 
@@ -167,7 +171,7 @@ class OgreBattleSaveStateGUI():
         root.mainloop()
 
     def _update_backend(self):
-        file = self.file_var.get()
+        file = self.file_var.get()[6:]
         slot = self.slot_var.get()
         self.obss = savestate.OgreBattleSaveState(file, slot)
         self.unit_viewer.reset()
@@ -213,7 +217,7 @@ class OgreBattleSaveStateGUI():
     def on_open(self):
         new_file = filedialog.askopenfilename()
         if new_file:
-            self.file_var.set(new_file)
+            self.file_var.set(f"file: {new_file}")
             self.slot_var.set(0)
             self.on_select_slot()
             self.success_message("Changed file!")
