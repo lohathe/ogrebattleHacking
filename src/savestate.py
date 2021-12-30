@@ -191,15 +191,17 @@ class OgreBattleSaveState(object):
         return res
 
     def update_checksum(self):
-        address, size, _1, info_name, serialize, deserialize = OgreBattleSaveState.MISC_LAYOUT[0]
+        address, size, _1, info_name, _2, _3 = OgreBattleSaveState.MISC_LAYOUT[0]
         assert(info_name == "CHECKSUM")
-        new_checksum = self.compute_checksum()
-        bytes_ = serialize(new_checksum)
-        self.data[address:address+size] = bytes_
+        new_checksum = self.compute_checksum().raw
+        if len(new_checksum) != size:
+            raise RuntimeError("Some error in checksum: should be {} bytes, not {}.".format(size, len(new_checksum)))
+        self.data[address:address+size] = new_checksum
 
     def save(self):
+        self.update_checksum()
         with open(self.file, "rb") as f:
-            content = f.read()
+            content = bytearray(f.read())
         start = self.index*OgreBattleSaveState.SLOT_SIZE
         end = start + OgreBattleSaveState.SLOT_SIZE
         content[start:end] = self.data
