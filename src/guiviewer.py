@@ -10,14 +10,12 @@ import savestate
 FONT = "verbena 12"
 FONT_BOLD = FONT + " bold"
 
-class UnitWidget(ttk.Frame):
+class CharacterInfoWidget(ttk.Frame):
 
     def __init__(self, parent):
-        super(UnitWidget, self).__init__(parent)
+        super(CharacterInfoWidget, self).__init__(parent)
         self.configure(
             padding="0 10 0 10",
-            borderwidth=2,
-            relief=GROOVE,
         )
         self._save_on_update = True
 
@@ -102,6 +100,9 @@ class OgreBattleSaveStateGUI():
 
     def __init__(self, file):
         self.obss = None
+        # random container for images...otherwise images are garbage-collected
+        # by python and never displayed in the GUI :(
+        self.__images_ref = []
 
         root = Tk()
         root.title("Ogre Battle: MotBQ - Save State Editor")
@@ -112,92 +113,128 @@ class OgreBattleSaveStateGUI():
         style.configure("Error.TLabel", foreground="#7f0000", font=FONT_BOLD)
         style.configure("Title.TLabel", foreground="#ffffff", background="#555555", font=FONT_BOLD, anchor=CENTER)
 
-        # toolbar
-        toolbar = ttk.Frame(root)
-        toolbar.grid(column=0, columnspan=3, row=0, sticky=(E, W))
-        toolbar.columnconfigure(2, weight=1)
-        _open_img = PhotoImage(file="data/icon_open.gif")
-        _open = ttk.Button(toolbar, image=_open_img, text="OPEN", style="ToolButton.TButton", compound=TOP, command=self.on_open)
-        _open.grid(column=0, row=0, padx=2, pady=4, sticky=(W))
-        save_img = PhotoImage(file="data/icon_save.gif")
-        save = ttk.Button(toolbar, image=save_img, text="SAVE", style="ToolButton.TButton", compound=TOP, command=self.on_save)
-        save.grid(column=1, row=0, padx=2, pady=4, sticky=(W))
-        separator = ttk.Separator(toolbar, orient=HORIZONTAL)
-        separator.grid(column=0, columnspan=3, row=1, sticky=(E, W))
+        toolbar = self.__build_toolbar(root)
+        toolbar.grid(column=0, row=0, sticky=(E, W))
 
-        # file name reference & slot selector
-        slot_selector_frame = ttk.LabelFrame(root, text="savestate")#, labelwidget=file_label, labelanchor="nw")
-        slot_selector_frame.grid(column=0, columnspan=3, row=1, sticky=(E, W))
-        for i in range(3):
-            slot_selector_frame.columnconfigure(i, weight=1)
-        self.file_var = StringVar(value=f"file: {file}")
-        file_label = ttk.Label(slot_selector_frame, textvariable=self.file_var, anchor=CENTER)
-        slot_selector_frame.configure(labelwidget=file_label, labelanchor="n")
-        #file_label.grid(column=0, columnspan=3, row=1, sticky=(E, W), padx=10, pady=5)
-        self.slot_var = IntVar(value=0)
-        slot_1 = ttk.Radiobutton(slot_selector_frame, variable=self.slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
-        slot_1.grid(column=0, row=2, padx=5, pady=5)
-        slot_2 = ttk.Radiobutton(slot_selector_frame, variable=self.slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
-        slot_2.grid(column=1, row=2, padx=5, pady=5)
-        slot_3 = ttk.Radiobutton(slot_selector_frame, variable=self.slot_var, command=self.on_select_slot, text="SLOT 3", value=2)
-        slot_3.grid(column=2, row=2, padx=5, pady=5)
+        slot_selector = self.__build_slot_selector(root)
+        slot_selector.grid(column=0, row=1, sticky=(E, W))
 
-        # unit selector
-        self.unit_selector_var = StringVar(value=0)
-        unit_selector = ttk.Spinbox(root, from_=0, to=100, increment=1, textvariable=self.unit_selector_var, command=self.on_select_unit)
-        unit_selector.grid(column=0, columnspan=3, row=3, sticky=(E, W))
-        self.unit_viewer = UnitWidget(root)
-        self.unit_viewer.grid(column=0, columnspan=3, row=4, sticky=(E, W))
-        self.unit_viewer.bind("<<modified>>", self.on_unit_modified)
+        character_view = self.__build_character_view(root)
+        character_view.grid(column=0, row=2, sticky=(E, W))
 
-        # status bar
-        separator = ttk.Separator(root, orient=HORIZONTAL)
-        separator.grid(column=0, columnspan=3, row=5, sticky=(E, W))
-        status_bar = StringVar()
-        status_bar_entry = ttk.Label(root, textvariable=status_bar)
-        status_bar_entry.grid(column=0, columnspan=3, row=6, sticky=(E, W))
-        self.status_bar = status_bar
-        self.status_bar_entry = status_bar_entry
+        status_bar = self.__build_status_bar(root)
+        status_bar.grid(column=0, row=3, sticky=(N, E, W))
 
         # some layout on main window
-        for i in range(3):
-            root.columnconfigure(i, weight=1)
+        root.columnconfigure(0, weight=1)
+        root.rowconfigure(3, weight=1)
         for child in root.winfo_children():
             child.grid_configure(padx=5, pady=5)
 
         # display something sensible
+        self.file_var.set(f"file: {file}")
         self.on_select_slot()
 
         root.mainloop()
+
+
+    def __build_toolbar(self, parent):
+        actions = [
+            ("OPEN", "data/icon_open.gif", self.on_open),
+            ("SAVE", "data/icon_save.gif", self.on_save),
+        ]
+        COL_COUNT = len(actions)
+
+        frame = ttk.Frame(parent)
+        frame.columnconfigure(COL_COUNT, weight=1)
+        for i, (action_name, action_icon, action_callback) in enumerate(actions):
+            icon = PhotoImage(file=action_icon)
+            button = ttk.Button(frame,
+                image=icon, text=action_name, compound=TOP,
+                style="ToolButton.TButton",
+                command=action_callback)
+            button.grid(column=i, row=0, padx=2, pady=4)
+            self.__images_ref.append(icon)
+        separator = ttk.Separator(frame, orient=HORIZONTAL)
+        separator.grid(column=0, columnspan=COL_COUNT+1, row=1, sticky=(E, W))
+
+        return frame
+
+    def __build_slot_selector(self, parent):
+        frame = ttk.LabelFrame(parent, text="savestate", labelanchor="n")
+        frame.columnconfigure(0, weight=1)
+        frame.columnconfigure(4, weight=1)
+        file_var = StringVar(value="file: None")
+        file_name_label = ttk.Label(frame, textvariable=file_var, anchor=CENTER)
+        frame.configure(labelwidget=file_name_label)
+        slot_var = IntVar(value=0)
+        slot_1 = ttk.Radiobutton(frame, variable=slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
+        slot_1.grid(column=1, row=1, padx=5, pady=5)
+        slot_2 = ttk.Radiobutton(frame, variable=slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
+        slot_2.grid(column=2, row=1, padx=5, pady=5)
+        slot_3 = ttk.Radiobutton(frame, variable=slot_var, command=self.on_select_slot, text="SLOT 3", value=2)
+        slot_3.grid(column=3, row=1, padx=5, pady=5)
+
+        self.file_var = file_var
+        self.slot_var = slot_var
+        return frame
+
+    def __build_character_view(self, parent):
+        frame = ttk.Frame(parent)
+        frame.columnconfigure(1, weight=1)
+        character_var = IntVar(value=0)
+        selector = ttk.Spinbox(frame, from_=0, to=100, increment=1, textvariable=character_var, command=self.on_select_unit)
+        selector.grid(column=0, columnspan=3, row=0, sticky=(E, W))
+        character_info = CharacterInfoWidget(frame)
+        character_info.grid(column=1, row=1, sticky=(E, W))
+        character_info.bind("<<modified>>", self.on_unit_modified)
+
+        self.character_var = character_var
+        self.character_info = character_info
+        return frame
+
+    def __build_status_bar(self, parent):
+        frame = ttk.Frame(parent)
+        frame.columnconfigure(0, weight=1)
+        frame.rowconfigure(1, weight=1)
+        separator = ttk.Separator(frame, orient=HORIZONTAL)
+        separator.grid(column=0, row=0, sticky=(E, W))
+        status_bar = StringVar()
+        status_bar_entry = ttk.Label(frame, textvariable=status_bar)
+        status_bar_entry.grid(column=0, row=1, sticky=(N, E, W))
+
+        self.status_bar = status_bar
+        self.status_bar_entry = status_bar_entry
+        return frame
 
     def _update_backend(self):
         file = self.file_var.get()[6:]
         slot = self.slot_var.get()
         self.obss = savestate.OgreBattleSaveState(file, slot)
-        self.unit_viewer.reset()
+        self.character_info.reset()
 
     def on_select_slot(self, *args, **kwargs):
         try:
             self._update_backend()
-            self.unit_selector_var.set(0)
+            self.character_var.set(0)
             self.on_select_unit()
         except Exception as e:
             print("ERROR 'on_select_slot': {}".format(e))
 
     def on_select_unit(self, *args, **kwargs):
         try:
-            new_index = int(self.unit_selector_var.get())
+            new_index = self.character_var.get()
             new_unit_data = {}
             for key in ("NAME", "CLASS", "LVL", "EXP", "HP", "STR", "AGI", "INT", "CHA", "ALI", "LUK", "COST", "ITEM",):
                 new_unit_data[key] = self.obss.get_unit_info(new_index, key)
-            self.unit_viewer.update(new_unit_data)
+            self.character_info.update(new_unit_data)
         except Exception as e:
             print("ERROR 'on_select_unit': {}".format(e))
 
     def on_unit_modified(self, event, *args, **kwargs):
         try:
             (name, value) = event.VirtualEventData
-            unit_index = int(self.unit_selector_var.get())
+            unit_index = self.character_var.get()
             self.obss.set_unit_info(unit_index, name, value)
             message = f"{name} successfully updated"
             self.success_message(message)
