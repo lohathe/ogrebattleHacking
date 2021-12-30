@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from tkinter import *
 from tkinter import ttk
+from tkinter import filedialog
 import argparse
 
 import savestate
@@ -139,8 +140,8 @@ class OgreBattleSaveStateGUI():
         slot_3.grid(column=2, row=2)
 
         # unit selector
-        self.unit_selctor_var = StringVar(value=0)
-        unit_selector = ttk.Spinbox(root, from_=0, to=100, increment=1, textvariable=self.unit_selctor_var, command=self.on_select_unit)
+        self.unit_selector_var = StringVar(value=0)
+        unit_selector = ttk.Spinbox(root, from_=0, to=100, increment=1, textvariable=self.unit_selector_var, command=self.on_select_unit)
         unit_selector.grid(column=0, columnspan=3, row=3, sticky=(E, W))
         self.unit_viewer = UnitWidget(root)
         self.unit_viewer.grid(column=0, columnspan=3, row=4, sticky=(E, W))
@@ -163,7 +164,6 @@ class OgreBattleSaveStateGUI():
 
         # display something sensible
         self.on_select_slot()
-        self.on_select_unit()
 
         root.mainloop()
 
@@ -176,14 +176,14 @@ class OgreBattleSaveStateGUI():
             new_index = int(self.slot_var.get())
             self.slot = new_index
             self._update_backend()
-            self.unit_selctor_var.set(0)
+            self.unit_selector_var.set(0)
             self.on_select_unit()
         except Exception as e:
             print("ERROR 'on_select_slot': {}".format(e))
 
     def on_select_unit(self, *args, **kwargs):
         try:
-            new_index = int(self.unit_selctor_var.get())
+            new_index = int(self.unit_selector_var.get())
             new_unit_data = {}
             for key in ("NAME", "CLASS", "LVL", "EXP", "HP", "STR", "AGI", "INT", "CHA", "ALI", "LUK", "COST", "ITEM",):
                 new_unit_data[key] = self.obss.get_unit_info(new_index, key)
@@ -194,7 +194,7 @@ class OgreBattleSaveStateGUI():
     def on_unit_modified(self, event, *args, **kwargs):
         try:
             (name, value) = event.VirtualEventData
-            unit_index = int(self.unit_selctor_var.get())
+            unit_index = int(self.unit_selector_var.get())
             self.obss.set_unit_info(unit_index, name, value)
             message = f"{name} successfully updated"
             self.success_message(message)
@@ -204,10 +204,22 @@ class OgreBattleSaveStateGUI():
             print("ERROR 'on_unit_modified': {}".format(e))
 
     def on_save(self):
-        self.warning_message("ERROR: 'save' function not implemented")
+        try:
+            self.obss.save()
+            self.success_message("Save completed!")
+        except Exception as e:
+            self.warning_message("ERROR: problem persisting changes")
+            print("ERROR 'on_save': {}".format(e))
 
     def on_open(self):
-        self.warning_message("ERROR: 'open' function not implemented")
+        new_file = filedialog.askopenfilename()
+        if new_file:
+            self.file = new_file
+            self.slot_var.set(0)
+            self.on_select_slot()
+            self.success_message("Changed file!")
+        else:
+            self.warning_message("New file not opened")
 
     def warning_message(self, message):
         self.status_bar_entry.config(style="Error.TLabel")
