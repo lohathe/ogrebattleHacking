@@ -14,8 +14,8 @@ class UnitWidget(ttk.Frame):
     def __init__(self, parent):
         super(UnitWidget, self).__init__(parent)
         self.configure(
-            padding="10 10 10 10",
-            borderwidth=3,
+            padding="0 10 0 10",
+            borderwidth=2,
             relief=GROOVE,
         )
         self._save_on_update = True
@@ -24,33 +24,35 @@ class UnitWidget(ttk.Frame):
 
         name = StringVar()
         name_entry = ttk.Label(self, textvariable=name)
-        name_entry.grid(column=0, columnspan=4, row=0, sticky=(N, E, W))
+        name_entry.grid(column=0, columnspan=6, row=0, sticky=(N, E, W))
         name_entry["style"] = "Title.TLabel"
         self.editors["NAME"] = name
         self.editors["NAME_entry"] = name_entry
 
         unitclass = StringVar()
         unitclass_entry = ttk.Label(self, textvariable=unitclass)
-        unitclass_entry.grid(column=0, columnspan=2, row=1, rowspan=3, sticky=(N, E, S, W))
+        unitclass_entry.grid(column=1, columnspan=2, row=1, rowspan=3, sticky=(N, E, S, W))
         self.editors["CLASS"] = unitclass
         self.editors["CLASS_entry"] = unitclass_entry
 
-        self._create_num_editor("Lvl:", "LVL", 2, 1)
-        self._create_num_editor("Exp:", "EXP", 2, 2)
-        self._create_num_editor("Cost:", "COST", 2, 3)
-        self._create_num_editor("Hp:", "HP", 0, 4)
-        self._create_num_editor("Str:", "STR", 0, 5)
-        self._create_num_editor("Cha:", "CHA", 2, 5)
-        self._create_num_editor("Agi:", "AGI", 0, 6)
-        self._create_num_editor("Ali:", "ALI", 2, 6)
-        self._create_num_editor("Int:", "INT", 0, 7)
-        self._create_num_editor("Luk:", "LUK", 2, 7)
+        self._create_num_editor("Lvl:", "LVL", 3, 1)
+        self._create_num_editor("Exp:", "EXP", 3, 2)
+        self._create_num_editor("Cost:", "COST", 3, 3)
+        self._create_num_editor("Hp:", "HP", 1, 4)
+        self._create_num_editor("Str:", "STR", 1, 5)
+        self._create_num_editor("Cha:", "CHA", 3, 5)
+        self._create_num_editor("Agi:", "AGI", 1, 6)
+        self._create_num_editor("Ali:", "ALI", 3, 6)
+        self._create_num_editor("Int:", "INT", 1, 7)
+        self._create_num_editor("Luk:", "LUK", 3, 7)
 
         self.event_add("<<modified>>", "None")
 
         # some layout on main window
         for child in self.winfo_children():
-            child.grid_configure(padx=5, pady=5)
+            child.grid_configure(padx=2, pady=2, ipadx=3, ipady=3)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(5, weight=1)
 
         self.reset()
 
@@ -67,7 +69,7 @@ class UnitWidget(ttk.Frame):
             self.on_value_changed(name, *args, **kwargs)
         variable.trace_add("write", callback)
         entry = ttk.Entry(self, width=5, textvariable=variable)
-        entry.grid(column=column+1, row=row, sticky=W)
+        entry.grid(column=column+1, row=row, sticky=W, ipady=10)
         self.editors[f"{name}_label"] = label
         self.editors[f"{name}"] = variable
         self.editors[f"{name}_entry"] = entry
@@ -105,9 +107,10 @@ class OgreBattleSaveStateGUI():
         root = Tk()
         root.title("Ogre Battle: MotBQ - Save State Editor")
         style = ttk.Style()
-        style.configure("ToolButton.TButton", relief=FLAT, border=5)
+        style.configure("ToolButton.TButton", relief=FLAT, borderwidth=2, padding=2)
         style.configure("Success.TLabel", foreground="#297f00", font=FONT_BOLD)
         style.configure("Error.TLabel", foreground="#7f0000", font=FONT_BOLD)
+        style.configure("Title.TLabel", foreground="#ffffff", background="#555555", font=FONT_BOLD, anchor=CENTER)
 
         # toolbar
         toolbar = ttk.Frame(root)
@@ -129,18 +132,18 @@ class OgreBattleSaveStateGUI():
         # slot selector
         self.slot_var = StringVar(value=0)
         slot_1 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 1", value=0)
-        slot_1.grid(column=0, row=2, sticky=W)
+        slot_1.grid(column=0, row=2)
         slot_2 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 2", value=1)
-        slot_2.grid(column=1, row=2, sticky=W)
+        slot_2.grid(column=1, row=2)
         slot_3 = ttk.Radiobutton(root, variable=self.slot_var, command=self.on_select_slot, text="SLOT 3", value=2)
-        slot_3.grid(column=2, row=2, sticky=W)
+        slot_3.grid(column=2, row=2)
 
         # unit selector
         self.unit_selctor_var = StringVar(value=0)
         unit_selector = ttk.Spinbox(root, from_=0, to=100, increment=1, textvariable=self.unit_selctor_var, command=self.on_select_unit)
         unit_selector.grid(column=0, columnspan=3, row=3, sticky=(E, W))
         self.unit_viewer = UnitWidget(root)
-        self.unit_viewer.grid(column=0, columnspan=3, row=4)#, sticky=(N, E, S, W))
+        self.unit_viewer.grid(column=0, columnspan=3, row=4, sticky=(E, W))
         self.unit_viewer.bind("<<modified>>", self.on_unit_modified)
 
         # status bar
