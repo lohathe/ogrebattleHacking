@@ -107,37 +107,38 @@ class OgreBattleSaveState(object):
     Mapping the bytes inside the save state for "Ogre Battle: MofBQ".
     """
 
-    SLOT_SIZE = 0xAAB
+    START_ADDRESS = 0x0001
+    SLOT_SIZE = 0xAAA
     OPINION_LEADER_NAME_REF = 0x07a4
 
     # offset, size, number of items, field name, deserialize func, serialize func
     UNIT_LAYOUT = [
-        (0x006a, 1, 100, "CLASS", bytes_to_class, class_to_bytes),
-        (0x0132, 1, 100, "LVL", bytes_to_num, num_to_bytes),
-        (0x0196, 1, 100, "EXP", bytes_to_num, num_to_bytes),
-        (0x01fa, 2, 100, "HP", bytes_to_num, num_to_bytes),
-        (0x02c2, 1, 100, "STR", bytes_to_num, num_to_bytes),
-        (0x0326, 1, 100, "AGI", bytes_to_num, num_to_bytes),
-        (0x038a, 1, 100, "INT", bytes_to_num, num_to_bytes),
-        (0x03ee, 1, 100, "CHA", bytes_to_num, num_to_bytes),
-        (0x0452, 1, 100, "ALI", bytes_to_num, num_to_bytes),
-        (0x04b6, 1, 100, "LUK", bytes_to_num, num_to_bytes),
-        (0x051a, 2, 100, "COST", bytes_to_num, num_to_bytes),
-        (0x05e2, 1, 100, "ITEM", bytes_to_item, item_to_bytes),
-        (0x0646, 2, 100, "NAME", bytes_to_name, name_to_bytes),
-        (0x070e, 1, 100, "GROUP ROSTER", bytes_to_num, num_to_bytes),
-        (0x0772, 1, 25, "x9?", bytes_to_num, num_to_bytes),
+        (0x0069, 1, 100, "CLASS", bytes_to_class, class_to_bytes),
+        (0x0131, 1, 100, "LVL", bytes_to_num, num_to_bytes),
+        (0x0195, 1, 100, "EXP", bytes_to_num, num_to_bytes),
+        (0x01f9, 2, 100, "HP", bytes_to_num, num_to_bytes),
+        (0x02c1, 1, 100, "STR", bytes_to_num, num_to_bytes),
+        (0x0325, 1, 100, "AGI", bytes_to_num, num_to_bytes),
+        (0x0389, 1, 100, "INT", bytes_to_num, num_to_bytes),
+        (0x03ed, 1, 100, "CHA", bytes_to_num, num_to_bytes),
+        (0x0451, 1, 100, "ALI", bytes_to_num, num_to_bytes),
+        (0x04b5, 1, 100, "LUK", bytes_to_num, num_to_bytes),
+        (0x0519, 2, 100, "COST", bytes_to_num, num_to_bytes),
+        (0x05e1, 1, 100, "ITEM", bytes_to_item, item_to_bytes),
+        (0x0645, 2, 100, "NAME", bytes_to_name, name_to_bytes),
+        (0x070d, 1, 100, "GROUP ROSTER", bytes_to_num, num_to_bytes),
+        (0x0771, 1, 25, "x9?", bytes_to_num, num_to_bytes),
     ]
 
     GROUPS_LAYOUT = [
-        (0x078b, 1, 125, "units formation", bytes_to_num),
-        (0x0808, 1, 125, "units barraks", bytes_to_num),
+        (0x078a, 1, 125, "units formation", bytes_to_num),
+        (0x0807, 1, 125, "units barraks", bytes_to_num),
         (0x0000, 0, 0, "is group leader", bytes_to_num),
     ]
 
     MISC_LAYOUT = [
-        (0x0aa9, 2, 1, "CHECKSUM", bytes_to_num, num_to_bytes),
-        (0x0911, 8, 1, "LEADER_NAME", bytes_to_str, str_to_bytes),
+        (0x0aa8, 2, 1, "CHECKSUM", bytes_to_num, num_to_bytes),
+        (0x0910, 8, 1, "LEADER_NAME", bytes_to_str, str_to_bytes),
         (0x0000, 1, 1, "money", bytes_to_num, num_to_bytes),
         (0x0000, 1, 1, "reputation", bytes_to_num, num_to_bytes),
     ]
@@ -149,7 +150,7 @@ class OgreBattleSaveState(object):
         self.index = index
         self.data = []
         with open(file, "rb") as f:
-            f.seek(OgreBattleSaveState.SLOT_SIZE*index)
+            f.seek(OgreBattleSaveState.START_ADDRESS + OgreBattleSaveState.SLOT_SIZE*index)
             self.data = bytearray(f.read(OgreBattleSaveState.SLOT_SIZE))
 
         # update the name of the opinion leader
@@ -184,7 +185,7 @@ class OgreBattleSaveState(object):
             value=bytes_to_int(bytes_),
             formatted=deserialize(bytes_),
             raw=bytes_,
-            address=(self.index*OgreBattleSaveState.SLOT_SIZE) + address,
+            address=(OgreBattleSaveState.START_ADDRESS + self.index*OgreBattleSaveState.SLOT_SIZE) + address,
         )
         return res
 
@@ -211,15 +212,15 @@ class OgreBattleSaveState(object):
             value=bytes_to_int(bytes_),
             formatted=deserialize(bytes_),
             raw=bytes_,
-            address=(self.index*OgreBattleSaveState.SLOT_SIZE) + address,
+            address=(OgreBattleSaveState.START_ADDRESS + self.index*OgreBattleSaveState.SLOT_SIZE) + address,
         )
         return res
 
     def compute_checksum(self):
-        START_ADDRESS = 0x0004  # included
-        END_ADDRESS = 0x0aa9  # excluded
+        CHECKSUM_START_ADDRESS = 0x0002  # included
+        CHECKSUM_END_ADDRESS = 0x0aa7  # excluded
         value = 0
-        for i in range(START_ADDRESS, END_ADDRESS):
+        for i in range(CHECKSUM_START_ADDRESS, CHECKSUM_END_ADDRESS):
             value = (value + self.data[i]) & 0xFFFF
         res = ReadData(
             name="COMPUTED_CHECKSUM",
@@ -242,7 +243,7 @@ class OgreBattleSaveState(object):
         self.update_checksum()
         with open(self.file, "rb") as f:
             content = bytearray(f.read())
-        start = self.index*OgreBattleSaveState.SLOT_SIZE
+        start = OgreBattleSaveState.START_ADDRESS + self.index*OgreBattleSaveState.SLOT_SIZE
         end = start + OgreBattleSaveState.SLOT_SIZE
         content[start:end] = self.data
         with open(self.file, "wb") as f:
