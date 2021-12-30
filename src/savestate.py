@@ -26,6 +26,8 @@ def bytes_to_int(data):
 
 def int_to_bytes(data):
     # type: (int) -> bytes
+    if data < 0:
+        raise RuntimeError("Cannot convert negative number to bytes!")
     res = []
     while True:
         res.append(data & 0xFF)
