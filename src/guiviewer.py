@@ -173,6 +173,8 @@ class OgreBattleSaveStateGUI():
             new_index = int(self.slot_var.get())
             self.slot = new_index
             self._update_backend()
+            self.unit_selctor_var.set(0)
+            self.on_select_unit()
         except Exception as e:
             print("ERROR 'on_select_slot': {}".format(e))
 
