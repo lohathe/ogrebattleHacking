@@ -150,8 +150,15 @@ class OgreBattleSaveState(object):
         self.index = index
         self.data = []
         with open(file, "rb") as f:
-            f.seek(OgreBattleSaveState.START_ADDRESS + OgreBattleSaveState.SLOT_SIZE*index)
-            self.data = bytearray(f.read(OgreBattleSaveState.SLOT_SIZE))
+            start = (OgreBattleSaveState.START_ADDRESS +
+                     OgreBattleSaveState.SLOT_SIZE*index)
+            size = OgreBattleSaveState.SLOT_SIZE
+            f.seek(start)
+            self.data = bytearray(f.read(size))
+            if len(self.data) != OgreBattleSaveState.SLOT_SIZE:
+                raise RuntimeError(
+                    f"problem reading slot {index} of file {file}: " +
+                    f"read {len(self.data)} bytes instead of {size}")
 
         # update the name of the opinion leader
         offset, size, _1, info_name, serialize, _2 = self.MISC_LAYOUT[1]
@@ -217,8 +224,8 @@ class OgreBattleSaveState(object):
         return res
 
     def compute_checksum(self):
-        CHECKSUM_START_ADDRESS = 0x0002  # included
-        CHECKSUM_END_ADDRESS = 0x0aa7  # excluded
+        CHECKSUM_START_ADDRESS = 0x0003  # included
+        CHECKSUM_END_ADDRESS = 0x0aa8  # excluded
         value = 0
         for i in range(CHECKSUM_START_ADDRESS, CHECKSUM_END_ADDRESS):
             value = (value + self.data[i]) & 0xFFFF
