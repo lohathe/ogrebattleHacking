@@ -29,12 +29,7 @@ class CharacterInfoWidget(ttk.Frame):
         self.editors["NAME"] = name
         self.editors["NAME_entry"] = name_entry
 
-        unitclass = StringVar()
-        unitclass_entry = ttk.Label(self, textvariable=unitclass)
-        unitclass_entry.grid(column=1, columnspan=2, row=1, rowspan=3, sticky=(N, E, S, W))
-        self.editors["CLASS"] = unitclass
-        self.editors["CLASS_entry"] = unitclass_entry
-
+        self._create_selector_editor("", "CLASS", 1, 1, columnspan=2, rowspan=3, data=savestate.CLASSES)
         self._create_num_editor("Lvl:", "LVL", 3, 1)
         self._create_num_editor("Exp:", "EXP", 3, 2)
         self._create_num_editor("Cost:", "COST", 3, 3)
@@ -45,6 +40,7 @@ class CharacterInfoWidget(ttk.Frame):
         self._create_num_editor("Ali:", "ALI", 3, 6)
         self._create_num_editor("Int:", "INT", 1, 7)
         self._create_num_editor("Luk:", "LUK", 3, 7)
+        self._create_selector_editor("Item:", "ITEM", 1, 8, columnspan=3, data=savestate.ITEMS)
 
         self.event_add("<<modified>>", "None")
 
@@ -55,6 +51,38 @@ class CharacterInfoWidget(ttk.Frame):
         self.columnconfigure(5, weight=1)
 
         self.reset()
+
+    def _create_selector_editor(self, label_text="", name="", column=0, row=0, columnspan=1, rowspan=1, data=None):
+        if name.strip() == "":
+            raise RuntimeError("Must specifiy a name for editor!")
+        if name in self.editors:
+            raise RuntimeError(f"Name '{name}' is already used!")
+        if not data:
+            raise RuntimeError(f"Cannot create selector for {name} with empty data!")
+
+        if label_text:
+            label = ttk.Label(self, text=label_text)
+            label.grid(column=column, row=row, sticky=E)
+            column = column+1
+        variable = StringVar()
+        def callback(*args, **kwargs):
+            self.on_value_changed(name, *args, **kwargs)
+        variable.trace_add("write", callback)
+        def command(name=name):
+            result = SelectorDialog(None, f"select {name}", data=data).result
+            if result:
+                self.editors[name].set(result["name"])
+        entry = ttk.Button(self, textvariable=variable, command=command)
+        sticky = (W, )
+        if columnspan > 1:
+            sticky = (W, E)
+        if rowspan > 1:
+            sticky = (W, N, E, S)
+        entry.grid(column=column, columnspan=columnspan, row=row, rowspan=rowspan, sticky=sticky, ipady=10)
+        if label_text:
+            self.editors[f"{name}_label"] = label
+        self.editors[f"{name}"] = variable
+        self.editors[f"{name}_entry"] = entry
 
     def _create_num_editor(self, label_text="", name="", column=0, row=0):
         if name.strip() == "":
