@@ -2,6 +2,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter import simpledialog
 import argparse
 
 import savestate
@@ -94,6 +95,31 @@ class CharacterInfoWidget(ttk.Frame):
             if isinstance(self.editors[editor_name], StringVar):
                 self.editors[editor_name].set("")
         self._save_on_update = True
+
+
+class SelectorDialog(simpledialog.Dialog):
+    def __init__(self, parent=None, title="", data=None):
+        self.data = data
+        self.result = None
+        super(SelectorDialog, self).__init__(parent=parent, title=title)
+
+    def body(self, body):
+        body.columnconfigure(0, weight=1)
+        listbox = Listbox(body, height=10)
+        listbox.grid(column=0, row=0, sticky=(N,E,S,W))
+        scrollbar = ttk.Scrollbar(body, orient=VERTICAL, command=listbox.yview)
+        scrollbar.grid(column=1, row=0, sticky=(N,S))
+        listbox["yscrollcommand"] = scrollbar.set
+        for i, el in enumerate(self.data):
+            listbox.insert("end", el["name"])
+        self.listbox = listbox
+        return listbox
+
+    def validate(self):
+        if len(self.listbox.curselection()) == 0:
+            return 0
+        self.result = self.data[self.listbox.curselection()[0]]
+        return 1
 
 
 class OgreBattleSaveStateGUI():
