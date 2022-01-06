@@ -212,8 +212,14 @@ class OgreBattleSaveStateGUI():
         slot_selector = self.__build_slot_selector(root)
         slot_selector.grid(column=0, row=1, sticky=(E, W))
 
-        character_view = self.__build_character_view(root)
-        character_view.grid(column=0, row=2, sticky=(E, W))
+        main_view = ttk.Notebook(root)
+        main_view.grid(column=0, row=2, sticky=(E, W))
+        character_view = self.__build_character_view(main_view)
+        formation_view = self.__build_formation_view(main_view)
+        misc_view = self.__build_misc_view(main_view)
+        main_view.add(character_view, text="Character")
+        main_view.add(formation_view, text="Army formation")
+        main_view.add(misc_view, text="Misc")
 
         status_bar = self.__build_status_bar(root)
         status_bar.grid(column=0, row=3, sticky=(N, E, W))
@@ -289,6 +295,20 @@ class OgreBattleSaveStateGUI():
         self.character_var = character_var
         self.character_info = character_info
         return frame
+
+    def __build_formation_view(self, parent):
+        frame = ttk.Frame(parent)
+        label = ttk.Label(frame, text="Not implemented yet :(")
+        label.grid(column=0, row=0)
+
+        return frame
+
+    def __build_misc_view(self, parent):
+        frame = ttk.Frame(parent)
+        label = ttk.Label(frame, text="Not implemented yet :(")
+        label.grid(column=0, row=0)
+        return frame
+
 
     def __build_status_bar(self, parent):
         frame = ttk.Frame(parent)
