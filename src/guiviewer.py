@@ -11,46 +11,75 @@ import savestate
 FONT = "verbena 12"
 FONT_BOLD = FONT + " bold"
 
-class CharacterInfoWidget(ttk.Frame):
 
+
+class SelectorDialog(simpledialog.Dialog):
+    """
+    Simple dialog to let the user select an item from a list.
+
+    TODO:
+     - show the "original value" (the value before selection)
+     - show the "current value" (the selection, which can be hidden if the list
+        is very long)
+     - show additional info stored inside savestate.ReadData if any
+    """
+    def __init__(self, parent=None, title="", data=None):
+        self.data = data
+        self.result = None
+        super(SelectorDialog, self).__init__(parent=parent, title=title)
+
+    def body(self, body):
+        body.columnconfigure(0, weight=1)
+        listbox = Listbox(body, height=10)
+        listbox.grid(column=0, row=0, sticky=(N,E,S,W))
+        scrollbar = ttk.Scrollbar(body, orient=VERTICAL, command=listbox.yview)
+        scrollbar.grid(column=1, row=0, sticky=(N,S))
+        listbox["yscrollcommand"] = scrollbar.set
+        for i, el in enumerate(self.data):
+            listbox.insert("end", el["name"])
+        self.listbox = listbox
+        return listbox
+
+    def validate(self):
+        if len(self.listbox.curselection()) == 0:
+            return 0
+        self.result = self.data[self.listbox.curselection()[0]]
+        return 1
+
+
+class EditorsFrame(ttk.Frame):
+    """
+    Base frame class that offers an automatic way to:
+     - create standard input widgets (text-editors and list-selectors)
+     - to store the widgets such that they can be later accessed
+     - notify to the outer world when the input-widgets have been modified
+       by the user by raising a `<<modified>>` virtual event which transport
+       both the "name" of the modified input as well as its new value
+    Every subclass should implement the `_create_body` method that should
+    populate the frame with the necessary widget.
+
+    The widgets are stored inside a dictionary `self.editors` with the current
+    protocol:
+     * <NAME> -> represents a `StringVar` (or a similar variable)
+     * <NAME>_entry -> represents the ttk.Entry associated to the <NAME> var
+     * <NAME>_label -> represents the label describing <NAME>_entry
+    Every <NAME> variable is then connected to the `on_value_changed` method
+    that in turn will raise the `<<modified>>` virtual event.
+
+    No support for undo-redo.
+    """
     def __init__(self, parent):
-        super(CharacterInfoWidget, self).__init__(parent)
-        self.configure(
-            padding="0 10 0 10",
-        )
+        super(EditorsFrame, self).__init__(parent)
         self._save_on_update = True
-
         self.editors = {}
 
-        name = StringVar()
-        name_entry = ttk.Label(self, textvariable=name)
-        name_entry.grid(column=0, columnspan=6, row=0, sticky=(N, E, W))
-        name_entry["style"] = "Title.TLabel"
-        self.editors["NAME"] = name
-        self.editors["NAME_entry"] = name_entry
-
-        self._create_selector_editor("", "CLASS", 1, 1, columnspan=2, rowspan=3, data=savestate.CLASSES)
-        self._create_num_editor("Lvl:", "LVL", 3, 1)
-        self._create_num_editor("Exp:", "EXP", 3, 2)
-        self._create_num_editor("Cost:", "COST", 3, 3)
-        self._create_num_editor("Hp:", "HP", 1, 4)
-        self._create_num_editor("Str:", "STR", 1, 5)
-        self._create_num_editor("Cha:", "CHA", 3, 5)
-        self._create_num_editor("Agi:", "AGI", 1, 6)
-        self._create_num_editor("Ali:", "ALI", 3, 6)
-        self._create_num_editor("Int:", "INT", 1, 7)
-        self._create_num_editor("Luk:", "LUK", 3, 7)
-        self._create_selector_editor("Item:", "ITEM", 1, 8, columnspan=3, data=savestate.ITEMS)
+        self._create_body()
 
         self.event_add("<<modified>>", "None")
-
-        # some layout on main window
-        for child in self.winfo_children():
-            child.grid_configure(padx=2, pady=2, ipadx=3, ipady=3)
-        self.columnconfigure(0, weight=1)
-        self.columnconfigure(5, weight=1)
-
         self.reset()
+
+    def _create_body(self):
+        raise NotImplementedError()
 
     def _create_selector_editor(self, label_text="", name="", column=0, row=0, columnspan=1, rowspan=1, data=None):
         if name.strip() == "":
@@ -109,6 +138,7 @@ class CharacterInfoWidget(ttk.Frame):
         self.event_generate("<<modified>>")
 
     def update(self, data):
+        # `data` should be a list of `savestate.ReadData`
         self._save_on_update = False
         for key, value in data.items():
             if key not in self.editors:
@@ -125,29 +155,38 @@ class CharacterInfoWidget(ttk.Frame):
         self._save_on_update = True
 
 
-class SelectorDialog(simpledialog.Dialog):
-    def __init__(self, parent=None, title="", data=None):
-        self.data = data
-        self.result = None
-        super(SelectorDialog, self).__init__(parent=parent, title=title)
+class CharacterInfoWidget(EditorsFrame):
 
-    def body(self, body):
-        body.columnconfigure(0, weight=1)
-        listbox = Listbox(body, height=10)
-        listbox.grid(column=0, row=0, sticky=(N,E,S,W))
-        scrollbar = ttk.Scrollbar(body, orient=VERTICAL, command=listbox.yview)
-        scrollbar.grid(column=1, row=0, sticky=(N,S))
-        listbox["yscrollcommand"] = scrollbar.set
-        for i, el in enumerate(self.data):
-            listbox.insert("end", el["name"])
-        self.listbox = listbox
-        return listbox
+    def _create_body(self):
+        self.configure(
+            padding="0 10 0 10",
+        )
 
-    def validate(self):
-        if len(self.listbox.curselection()) == 0:
-            return 0
-        self.result = self.data[self.listbox.curselection()[0]]
-        return 1
+        name = StringVar()
+        name_entry = ttk.Label(self, textvariable=name)
+        name_entry.grid(column=0, columnspan=6, row=0, sticky=(N, E, W))
+        name_entry["style"] = "Title.TLabel"
+        self.editors["NAME"] = name
+        self.editors["NAME_entry"] = name_entry
+
+        self._create_selector_editor("", "CLASS", 1, 1, columnspan=2, rowspan=3, data=savestate.CLASSES)
+        self._create_num_editor("Lvl:", "LVL", 3, 1)
+        self._create_num_editor("Exp:", "EXP", 3, 2)
+        self._create_num_editor("Cost:", "COST", 3, 3)
+        self._create_num_editor("Hp:", "HP", 1, 4)
+        self._create_num_editor("Str:", "STR", 1, 5)
+        self._create_num_editor("Cha:", "CHA", 3, 5)
+        self._create_num_editor("Agi:", "AGI", 1, 6)
+        self._create_num_editor("Ali:", "ALI", 3, 6)
+        self._create_num_editor("Int:", "INT", 1, 7)
+        self._create_num_editor("Luk:", "LUK", 3, 7)
+        self._create_selector_editor("Item:", "ITEM", 1, 8, columnspan=3, data=savestate.ITEMS)
+
+        # some layout on main window
+        for child in self.winfo_children():
+            child.grid_configure(padx=2, pady=2, ipadx=3, ipady=3)
+        self.columnconfigure(0, weight=1)
+        self.columnconfigure(5, weight=1)
 
 
 class OgreBattleSaveStateGUI():
