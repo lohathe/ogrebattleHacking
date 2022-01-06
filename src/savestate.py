@@ -139,8 +139,8 @@ class OgreBattleSaveState(object):
     MISC_LAYOUT = [
         (0x0aa8, 2, 1, "CHECKSUM", bytes_to_num, num_to_bytes),
         (0x0910, 8, 1, "LEADER_NAME", bytes_to_str, str_to_bytes),
-        (0x0000, 1, 1, "money", bytes_to_num, num_to_bytes),
-        (0x0000, 1, 1, "reputation", bytes_to_num, num_to_bytes),
+        (0x092b, 3, 1, "MONEY", bytes_to_num, num_to_bytes),
+        (0x092f, 1, 1, "REPUTATION", bytes_to_num, num_to_bytes),
     ]
 
     def __init__(self, file, index):
