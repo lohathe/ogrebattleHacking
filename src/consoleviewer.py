@@ -69,6 +69,9 @@ class ConsoleViewer(object):
     def save(self):
         self.obss.save()
 
+    def custom(self):
+        print("Write your temporary code here!")
+
 
 def parse_args():
     """
@@ -111,6 +114,8 @@ def parse_args():
     parser_fix_checksum = subparsers.add_parser("fix-checksum", description="show/solve problems related to the checksum")
     parser_fix_checksum.add_argument("-d", "--dry-run", action="store_true", help="show expected checksum but do not modify file")
 
+    parser_custom = subparsers.add_parser("custom", description="entry-point to easily script some custom logic: no arguments and no code!")
+
     return parser.parse_args()
 
 def main():
@@ -141,6 +146,9 @@ def main():
             viewer.show_checksum()
         else:
             viewer.save()
+
+    elif command == "custom":
+        viewer.custom()
 
 
 if __name__ == "__main__":
