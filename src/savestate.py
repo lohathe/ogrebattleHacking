@@ -174,33 +174,40 @@ class OgreBattleSaveState(object):
             "name": leader_name,
         })
 
-
-    def _find_unit_info_entry(self, info_name):
-        entry = [x for x in OgreBattleSaveState.UNIT_LAYOUT if x[3] == info_name]
+    def _find_info_entry(self, target, info_name):
+        INFOS = {
+            "UNIT": OgreBattleSaveState.UNIT_LAYOUT,
+            "MISC": OgreBattleSaveState.MISC_LAYOUT,
+        }
+        if target not in INFOS:
+            raise RuntimeError(f"Layout for '{target}' not found!")
+        entry = [x for x in INFOS[target] if x[3] == info_name]
         if len(entry) != 1:
-            raise RuntimeError(f"Cannot find entry for '{info_name}'")
+            raise RuntimeError(f"Found {len(entry)} of '{info_name}' inside '{target}'!")
         return entry[0]
 
-    def get_unit_info(self, unit_index, info_name):
-        offset, size, count_max, _1, deserialize, _2 = self._find_unit_info_entry(info_name)
-        if unit_index >= count_max:
-            raise RuntimeError(f"Going out-of-bound using unit_index '{unit_index}' for '{name}': max items are {count_max}!")
-        address = offset + unit_index*size
+    def get_info(self, info_target, info_name, stride=0):
+        offset, size, max_stride, _1, deserialize, _2 = self._find_info_entry(info_target, info_name)
+        if stride >= max_stride:
+            raise IndexError(f"stride {stride} for '{info_name}' is capped at {max_stride}!")
+        address = offset + stride*size
+        abslute_address = (OgreBattleSaveState.START_ADDRESS +
+                           self.index*OgreBattleSaveState.SLOT_SIZE) + address
         bytes_ = self.data[address:address+size]
         res = ReadData(
             name=info_name,
             value=bytes_to_int(bytes_),
             formatted=deserialize(bytes_),
             raw=bytes_,
-            address=(OgreBattleSaveState.START_ADDRESS + self.index*OgreBattleSaveState.SLOT_SIZE) + address,
+            address=abslute_address,
         )
         return res
 
-    def set_unit_info(self, unit_index, info_name, new_value):
-        offset, size, count_max, _1, _2, serialize = self._find_unit_info_entry(info_name)
-        if unit_index >= count_max:
-            raise RuntimeError(f"Going out-of-bound using unit_index '{unit_index}' for '{name}': max items are {count_max}!")
-        address = offset + unit_index*size
+    def set_info(self, new_value, info_target, info_name, stride=0):
+        offset, size, max_stride, _1, _2, serialize = self._find_info_entry(info_target, info_name)
+        if stride >= max_stride:
+            raise IndexError(f"stride {stride} for '{info_name}' is capped at {max_stride}!")
+        address = offset + stride*size
         bytes_ = serialize(new_value)
         if len(bytes_) > size:
             raise RuntimeError(f"Bad size for '{info_name}': '{new_value}'->'{bytes_}'")
@@ -210,18 +217,18 @@ class OgreBattleSaveState(object):
             bytes_.append(0)
         self.data[address:address+size] = bytes_
 
+    def get_unit_info(self, unit_index, info_name):
+        return self.get_info("UNIT", info_name, stride=unit_index)
+
+    def set_unit_info(self, unit_index, info_name, new_value):
+        self.set_info(new_value, "UNIT", info_name, stride=unit_index)
+
     def get_checksum(self):
-        address, size, _1, info_name, deserialize, _2 = OgreBattleSaveState.MISC_LAYOUT[0]
-        assert(info_name == "CHECKSUM")
-        bytes_ = self.data[address:address+size]
-        res = ReadData(
-            name=info_name,
-            value=bytes_to_int(bytes_),
-            formatted=deserialize(bytes_),
-            raw=bytes_,
-            address=(OgreBattleSaveState.START_ADDRESS + self.index*OgreBattleSaveState.SLOT_SIZE) + address,
-        )
-        return res
+        return self.get_info("MISC", "CHECKSUM")
+
+    def update_checksum(self):
+        new_checksum = self.compute_checksum().raw
+        self.set_info(new_checksum, "MISC", "CHECKSUM")
 
     def compute_checksum(self):
         CHECKSUM_START_ADDRESS = 0x0003  # included
@@ -237,14 +244,6 @@ class OgreBattleSaveState(object):
             address=0,
         )
         return res
-
-    def update_checksum(self):
-        address, size, _1, info_name, _2, _3 = OgreBattleSaveState.MISC_LAYOUT[0]
-        assert(info_name == "CHECKSUM")
-        new_checksum = self.compute_checksum().raw
-        if len(new_checksum) != size:
-            raise RuntimeError("Some error in checksum: should be {} bytes, not {}.".format(size, len(new_checksum)))
-        self.data[address:address+size] = new_checksum
 
     def save(self):
         self.update_checksum()
