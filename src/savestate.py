@@ -227,7 +227,7 @@ class OgreBattleSaveState(object):
         return self.get_info("MISC", "CHECKSUM")
 
     def update_checksum(self):
-        new_checksum = self.compute_checksum().raw
+        new_checksum = self.compute_checksum().value
         self.set_info(new_checksum, "MISC", "CHECKSUM")
 
     def compute_checksum(self):
