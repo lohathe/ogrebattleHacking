@@ -158,9 +158,7 @@ class EditorsFrame(ttk.Frame):
 class CharacterInfoWidget(EditorsFrame):
 
     def _create_body(self):
-        self.configure(
-            padding="0 10 0 10",
-        )
+        self.configure(padding="0 10 0 10")
 
         name = StringVar()
         name_entry = ttk.Label(self, textvariable=name)
@@ -187,6 +185,18 @@ class CharacterInfoWidget(EditorsFrame):
             child.grid_configure(padx=2, pady=2, ipadx=3, ipady=3)
         self.columnconfigure(0, weight=1)
         self.columnconfigure(5, weight=1)
+
+
+class MiscInfoWidget(EditorsFrame):
+    def _create_body(self):
+        self.configure(padding="0 10 0 10")
+
+        self._create_num_editor("Reputation:", "REPUTATION", 0, 1)
+        self._create_num_editor("Funds:", "MONEY", 0, 2)
+
+        for child in self.winfo_children():
+            child.grid_configure(padx=2, pady=2, ipadx=3, ipady=3)
+        self.columnconfigure(1, weight=1)
 
 
 class OgreBattleSaveStateGUI():
@@ -288,7 +298,7 @@ class OgreBattleSaveStateGUI():
         button_prev.grid(column=0, row=1, sticky=(N, S))
         character_info = CharacterInfoWidget(frame)
         character_info.grid(column=1, row=1, sticky=(E, W))
-        character_info.bind("<<modified>>", self.on_unit_modified)
+        character_info.bind("<<modified>>", self.on_character_modified)
         button_next = ttk.Button(frame, text=">", style="ToolButton.TButton", command=lambda:self.on_advance_character(+1))
         button_next.grid(column=2, row=1, sticky=(N, S))
 
@@ -305,10 +315,13 @@ class OgreBattleSaveStateGUI():
 
     def __build_misc_view(self, parent):
         frame = ttk.Frame(parent)
-        label = ttk.Label(frame, text="Not implemented yet :(")
-        label.grid(column=0, row=0)
-        return frame
+        frame.columnconfigure(1, weight=1)
+        misc_info = MiscInfoWidget(frame)
+        misc_info.grid(column=1, row=1, sticky=(E, W))
+        misc_info.bind("<<modified>>", self.on_misc_modified)
 
+        self.misc_info = misc_info
+        return frame
 
     def __build_status_bar(self, parent):
         frame = ttk.Frame(parent)
@@ -335,6 +348,7 @@ class OgreBattleSaveStateGUI():
             self.__update_backend()
             self.character_var.set(0)
             self.on_select_character()
+            self.__show_misc_info()
         except Exception as e:
             print("ERROR 'on_select_slot': {}".format(e))
 
@@ -371,7 +385,18 @@ class OgreBattleSaveStateGUI():
             self.warning_message(f"Problems retrieving info for character at index {character_index}")
             print("ERROR '__show_character_info': {}".format(e))
 
-    def on_unit_modified(self, event, *args, **kwargs):
+    def __show_misc_info(self):
+        INFOS = ["REPUTATION", "MONEY"]
+        try:
+            misc_info = {}
+            for key in INFOS:
+                misc_info[key] = self.obss.get_misc_info(key)
+            self.misc_info.update(misc_info)
+        except Exception as e:
+            self.warning_message("Problems retrieving misc info")
+            print("ERROR '__show_misc_info': {}".format(e))
+
+    def on_character_modified(self, event, *args, **kwargs):
         try:
             (name, value) = event.VirtualEventData
             unit_index = self.character_var.get()
@@ -381,7 +406,18 @@ class OgreBattleSaveStateGUI():
         except Exception as e:
             message = f"Error while updating {name}"
             self.warning_message(message)
-            print("ERROR 'on_unit_modified': {}".format(e))
+            print("ERROR 'on_character_modified': {}".format(e))
+
+    def on_misc_modified(self, event, *args, **kwargs):
+        try:
+            (name, value) = event.VirtualEventData
+            self.obss.set_misc_info(name, value)
+            message = f"{name} successfully updated"
+            self.success_message(message)
+        except Exception as e:
+            message = f"Error while updating {name}"
+            self.warning_message(message)
+            print("ERROR 'on_misc_modified': {}".format(e))
 
     def on_save(self):
         try:
