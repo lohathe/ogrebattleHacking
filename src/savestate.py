@@ -223,6 +223,12 @@ class OgreBattleSaveState(object):
     def set_unit_info(self, unit_index, info_name, new_value):
         self.set_info(new_value, "UNIT", info_name, stride=unit_index)
 
+    def get_misc_info(self, info_name):
+        return self.get_info("MISC", info_name)
+
+    def set_misc_info(self, info_name, new_value):
+        self.set_info(new_value, "MISC", info_name)
+
     def get_checksum(self):
         return self.get_info("MISC", "CHECKSUM")
 
