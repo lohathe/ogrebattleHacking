@@ -12,7 +12,6 @@ FONT = "verbena 12"
 FONT_BOLD = FONT + " bold"
 
 
-
 class SelectorDialog(simpledialog.Dialog):
     """
     Simple dialog to let the user select an item from a list.
@@ -72,6 +71,7 @@ class EditorsFrame(ttk.Frame):
         super(EditorsFrame, self).__init__(parent)
         self._save_on_update = True
         self.editors = {}
+        self.__images_ref = {}
 
         self._create_body()
 
@@ -88,7 +88,13 @@ class EditorsFrame(ttk.Frame):
             raise RuntimeError(f"Name '{name}' is already used!")
         if not data:
             raise RuntimeError(f"Cannot create selector for {name} with empty data!")
-
+        else:
+            for el in data:
+                if "img" not in el:
+                    continue
+                img_name = "{}_{}".format(name, el["name"])
+                img_data = el["img"]
+                self.__images_ref[img_name] = PhotoImage(data=img_data).zoom(3)
         if label_text:
             label = ttk.Label(self, text=label_text)
             label.grid(column=column, row=row, sticky=E)
@@ -101,7 +107,7 @@ class EditorsFrame(ttk.Frame):
             result = SelectorDialog(None, f"select {name}", data=data).result
             if result:
                 self.editors[name].set(result["name"])
-        entry = ttk.Button(self, textvariable=variable, command=command)
+        entry = ttk.Button(self, textvariable=variable, compound=TOP, command=command)
         sticky = (W, )
         if columnspan > 1:
             sticky = (W, E)
@@ -132,9 +138,15 @@ class EditorsFrame(ttk.Frame):
         self.editors[f"{name}_entry"] = entry
 
     def on_value_changed(self, name, *args, **kwargs):
+        new_value = self.editors[name].get()
+        img_name = f"{name}_{new_value}"
+        if img_name in self.__images_ref:
+            img = self.__images_ref[img_name]
+            entry = self.editors[f"{name}_entry"]
+            entry.configure(image=img)
         if not self._save_on_update:
             return
-        Event.VirtualEventData = (name, self.editors[name].get())
+        Event.VirtualEventData = (name, new_value)
         self.event_generate("<<modified>>")
 
     def update(self, data):
@@ -245,7 +257,6 @@ class OgreBattleSaveStateGUI():
         self.on_select_slot()
 
         root.mainloop()
-
 
     def __build_toolbar(self, parent):
         actions = [
