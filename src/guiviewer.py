@@ -131,7 +131,7 @@ class EditorsFrame(ttk.Frame):
         def callback(*args, **kwargs):
             self.on_value_changed(name, *args, **kwargs)
         variable.trace_add("write", callback)
-        entry = ttk.Entry(self, width=5, textvariable=variable)
+        entry = ttk.Entry(self, width=7, textvariable=variable)
         entry.grid(column=column+1, row=row, sticky=W, ipady=10)
         self.editors[f"{name}_label"] = label
         self.editors[f"{name}"] = variable
