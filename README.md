@@ -27,7 +27,7 @@ Both scripts are inside the `./src` folder and must be run from inside that fold
 
 Through the GUI application it is possible to modify everything but the name of of the characters:
 
-![gui character view](./img/gui_character_view.png)
+![gui character view](./doc/imgs/gui_character_view.png)
 
 Through the CLI application everything can be changed. Use
 
@@ -39,7 +39,8 @@ positional arguments:
 
 optional arguments:
   -h, --help            show this help message and exit
-  -i INFO, --info INFO  leave empty to display all unit infos```
+  -i INFO, --info INFO  leave empty to display all unit infos
+```
 
 to inspect some (or all) statistics of one or more characters or use
 
@@ -83,7 +84,7 @@ Some generic data. For now:
  - army funds (goth)
  - reputation
 
-![gui character view](./img/gui_misc_view.png)
+![gui character view](./doc/imgs/gui_misc_view.png)
 
 ```
 usage: consoleviewer.py FILE show misc [-h] [-i INFO]
