@@ -79,8 +79,8 @@ def parse_args():
 
     ./consoleviewer.py <file> [--slot=N] show unit [--info={ALL,STR,...}, --info] <UNIT_INDEX> [<UNIT_INDEX>...]
     ./consoleviewer.py <file> [--slot=N] show misc {checksum, reputation, money}
-    ./consoleviewer.py <file> [--slot=N] update unit <UNIT_INDEX> <INFO_NAME> <VALUE>
-    ./consoleviewer.py <file> [--slot=N] update misc <INFO_NAME> <VALUE>
+    ./consoleviewer.py <file> [--slot=N] update unit <UNIT_INDEX> <INFO> <VALUE>
+    ./consoleviewer.py <file> [--slot=N] update misc <INFO> <VALUE>
     ./consoleviewer.py <file> [--slot=N] fix-checksum [--dry-run]
     """
     parser = argparse.ArgumentParser(description="interact with SNES save state files for 'Ogre Battle: the March of the Black Queen'")
@@ -104,11 +104,11 @@ def parse_args():
 
     parser_update_unit = subparsers_update.add_parser("unit")
     parser_update_unit.add_argument("UNIT_INDEX", type=int)
-    parser_update_unit.add_argument("INFO_NAME", type=str)
+    parser_update_unit.add_argument("INFO", type=str)
     parser_update_unit.add_argument("VALUE", type=str)
 
     parser_update_misc = subparsers_update.add_parser("misc")
-    parser_update_misc.add_argument("INFO_NAME", type=str)
+    parser_update_misc.add_argument("INFO", type=str)
     parser_update_misc.add_argument("VALUE", type=str)
 
     parser_fix_checksum = subparsers.add_parser("fix-checksum", description="show/solve problems related to the checksum")
@@ -137,9 +137,9 @@ def main():
     elif command == "update":
         subcommand = args.subcommand
         if subcommand == "unit":
-            viewer.update_unit(args.UNIT_INDEX, args.INFO_NAME, args.VALUE)
+            viewer.update_unit(args.UNIT_INDEX, args.INFO, args.VALUE)
         elif subcommand == "misc":
-            viewer.update_misc(args.INFO_NAME, args.VALUE)
+            viewer.update_misc(args.INFO, args.VALUE)
 
     elif command == "fix-checksum":
         if args.dry_run:
